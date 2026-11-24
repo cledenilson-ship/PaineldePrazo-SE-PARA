@@ -1285,6 +1285,46 @@ tbody tr.clic{cursor:pointer}
   #tabCmp thead th:first-child,#tabRespOp thead th:first-child{background:#eef5fa}
   .ges-kpis{grid-template-columns:1fr 1fr} .ges-alertas{grid-template-columns:1fr} .ges-bloco{padding:14px 12px} .ges-ctrl input{width:100%} }
 </style>
+<style>
+/* ---------- inteligencia operacional ---------- */
+#secIntel{scroll-margin-top:118px}
+body.recorte-on #secIntel{scroll-margin-top:172px}
+.tl-tip{position:absolute;pointer-events:none;background:#0b3b63;color:#fff;border-radius:8px;padding:6px 9px;font-size:11px;line-height:1.35;box-shadow:0 6px 18px rgba(11,59,99,.25);transform:translate(-50%,-100%);z-index:5;white-space:nowrap}
+.tl-tip b{font-size:12px}
+.tl-tip i{font-style:normal;color:#bcd6ea}
+.tl-det{margin:8px 0 0}
+.tl-det summary{cursor:pointer;font-size:11.5px;font-weight:800;color:#0b5aa5;padding:5px 0;list-style:none}
+.tl-det summary::-webkit-details-marker{display:none}
+.tl-det summary:before{content:'▸ ';font-size:10px}
+.tl-det[open] summary:before{content:'▾ '}
+.tl-det .tw{max-height:250px;border:1px solid var(--line);border-radius:10px}
+.int-bloco{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px 17px;box-shadow:var(--shadow)}
+.int-bloco h3{margin:0 0 3px;font-size:14.5px;color:#0b3b63}
+.int-sub{font-size:11.5px;color:#6a7e8f;line-height:1.45;margin-bottom:9px}
+.int-grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.int-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:8px 0 10px}
+.int-kpi{border:1px solid var(--line);border-left:4px solid #0b5aa5;border-radius:10px;padding:8px 10px;background:#fbfdff}
+.int-kpi small{display:block;font-size:9.5px;font-weight:800;letter-spacing:.35px;text-transform:uppercase;color:#6a7e8f}
+.int-kpi b{display:block;font-size:19px;color:#0b3b63;line-height:1.2}
+.int-kpi span{font-size:10.5px;color:#7a8b9a;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.int-kpi.ruim{border-left-color:#c0392b}.int-kpi.bom{border-left-color:#1a9e5c}.int-kpi.neutro{border-left-color:#7a8b9a}
+.int-chart{width:100%;overflow:hidden}
+.int-chart svg{display:block;width:100%;height:auto}
+.int-bar{display:flex;align-items:center;gap:8px;font-size:11.5px;color:#17324a;padding:4px 0;border-bottom:1px dashed #e9f0f5}
+.int-bar:last-child{border-bottom:0}
+.int-bar .nm{flex:0 0 40%;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.int-bar .tk{flex:1 1 auto;height:9px;background:#eef4f8;border-radius:999px;overflow:hidden}
+.int-bar .tk i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#7fb2d8,#0b5aa5)}
+.int-bar .vl{flex:0 0 auto;font-weight:800;color:#0b3b63;font-size:11.5px}
+.int-bar .vl small{font-weight:600;color:#7a8b9a;margin-left:3px}
+.int-dq{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.int-dq .dq{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fbfdff}
+.int-dq .dq b{display:block;font-size:17px;color:#0b3b63}
+.int-dq .dq small{font-size:10.5px;color:#6a7e8f;line-height:1.3;display:block}
+.int-dq .dq.alerta b{color:#c0392b}
+.int-tag{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;border-radius:999px;padding:2px 7px;background:#eef3f7;color:#5a7086;margin-left:5px}
+@media (max-width:1000px){ .int-grid2{grid-template-columns:1fr} .int-kpis{grid-template-columns:1fr 1fr} }
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -1315,6 +1355,7 @@ tbody tr.clic{cursor:pointer}
     <button class="active" data-go="prazoCover"><i>⌂</i><span>Página inicial</span></button>
     <button data-go="secUnidade"><i>UN</i><span>Painel da unidade</span></button>
     <button data-go="secGestao"><i>G</i><span>Gestão por unidade</span></button>
+    <button data-go="secIntel"><i>9</i><span>Inteligência operacional</span></button>
     <button data-go="secFases"><i>1</i><span>Onde o prazo se perde</span><span class="nav-num" id="navFora">–</span></button>
     <button data-go="secTempo"><i>T</i><span>Tempo por etapa</span></button>
     <button data-go="secVenc"><i>!</i><span>Vencendo agora</span></button>
@@ -1554,6 +1595,94 @@ tbody tr.clic{cursor:pointer}
       <div class="nota" id="notaAlertas"></div>
     </div>
   </section>
+  <section id="secIntel">
+    <h2>Inteligência operacional <span class="tag" id="tagIntel"></span></h2>
+    <p class="lead">O que ainda dá para extrair da base além do retrato de hoje: a evolução do estoque, quem vai vencer nas próximas horas, o ritmo de entrada e baixa, as tentativas que falham, o retrabalho, a geografia, os horários e a qualidade do próprio registro. Tudo dentro do recorte aplicado ao painel.</p>
+
+    <div class="int-bloco">
+      <h3>1. Linha do tempo do estoque <span class="int-tag">30 dias</span></h3>
+      <div class="int-sub">Reconstruída a partir das datas dos eventos e da data máxima de entrega. Mostra o estoque aberto e, dentro dele, o que já estava vencido em cada dia — sem precisar de foto diária salva.</div>
+      <div class="int-kpis" id="tlKpis"></div>
+      <div class="int-chart" id="tlChart" style="position:relative"></div>
+      <div id="tlTable"></div>
+      <div class="nota" id="notaTl"></div>
+    </div>
+
+    <div class="int-grid2">
+      <div class="int-bloco">
+        <h3>2. Fila de risco</h3>
+        <div class="int-sub">Quem ainda pode ser salvo: vencidos, vencendo hoje, em 48h, 72h e 7 dias, com o ritmo de baixa recente de cada unidade e uma estimativa de dias para zerar a fila.</div>
+        <div class="int-kpis" id="riskKpis"></div>
+        <div class="tw" style="max-height:330px">
+          <table class="tab-fase" id="tabRisk">
+            <thead><tr><th>Unidade</th><th class="n">Abertos</th><th class="n">Vencidos</th><th class="n">≤72h</th><th class="n">Baixas 7d</th><th class="n">Dias p/ zerar</th></tr></thead>
+            <tbody id="riskBody"><tr><td colspan="6">Calculando…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="int-bloco">
+        <h3>3. Fluxo e capacidade</h3>
+        <div class="int-sub">Postagens entrando contra entregas saindo, dia a dia. Saldo positivo acumula estoque; saldo negativo é a unidade conseguindo drenar.</div>
+        <div class="int-kpis" id="flowKpis"></div>
+        <div class="int-chart" id="flowChart"></div>
+        <div class="nota" id="notaFlow"></div>
+      </div>
+    </div>
+
+    <div class="int-grid2">
+      <div class="int-bloco">
+        <h3>4. Tentativas e endereço</h3>
+        <div class="int-sub">Objetos que passaram por ausência, mudança, endereço inexistente, recusa ou desconhecido. Parte do atraso nasce aqui, antes de virar cobrança de unidade.</div>
+        <div class="int-kpis" id="addrKpis"></div>
+        <div id="addrBars"></div>
+      </div>
+
+      <div class="int-bloco">
+        <h3>5. Reincidência e retrabalho</h3>
+        <div class="int-sub">Objetos que passaram mais de uma vez pela mesma unidade ou voltaram ao fluxo depois de devolução. É o atraso que se paga duas vezes.</div>
+        <div class="int-kpis" id="loopKpis"></div>
+        <div id="loopBars"></div>
+      </div>
+    </div>
+
+    <div class="int-grid2">
+      <div class="int-bloco">
+        <h3>6. Onde o estoque vencido está</h3>
+        <div class="int-sub">Concentração por cidade da unidade do último evento, entre os objetos vencidos e ainda sem baixa.</div>
+        <div id="geoBars"></div>
+      </div>
+
+      <div class="int-bloco">
+        <h3>7. Rotas mais lentas</h3>
+        <div class="int-sub">Tempo entre a expedição do CTCE/TECA e a primeira leitura na unidade de destino. Mostra em qual trecho o objeto perde tempo antes de chegar ao CDD ou à agência.</div>
+        <div class="int-kpis" id="rotaKpis"></div>
+        <div id="rotaBars"></div>
+        <div class="nota" id="notaRota"></div>
+      </div>
+    </div>
+
+    <div class="int-grid2">
+      <div class="int-bloco">
+        <h3>8. Qualidade do dado</h3>
+        <div class="int-sub">O que no registro pode inflar ou esconder o atraso. Antes de cobrar a unidade, vale saber se o dado está limpo.</div>
+        <div class="int-dq" id="dqGrid"></div>
+      </div>
+
+      <div class="int-bloco">
+        <h3>9. Benchmark interno</h3>
+        <div class="int-sub">Sem meta oficial, a referência é a própria rede: quartis de aproveitamento no prazo por tipo de unidade. O 3º quartil vira meta relativa.</div>
+        <div class="tw">
+          <table class="tab-fase" id="tabBench">
+            <thead><tr><th>Tipo</th><th class="n">Unid.</th><th class="n">Entregues</th><th class="n">No prazo</th><th class="n">p25</th><th class="n">Mediana</th><th class="n">p75 / meta</th></tr></thead>
+            <tbody id="benchBody"><tr><td colspan="7">Calculando…</td></tr></tbody>
+          </table>
+        </div>
+        <div class="nota" id="notaBench"></div>
+      </div>
+    </div>
+  </section>
+
 
 
   <section id="secSintese" class="sintese-wrap">
@@ -3350,6 +3479,325 @@ function initGestao(){
   ['alertaMin','alertaPct'].forEach(function(id){ const e=$(id); if(e) e.addEventListener('input', function(){ renderAlertas(); }); });
 }
 
+/* ============ INTELIGENCIA OPERACIONAL ============ */
+const INT_DIA=86400000;
+function intAgora(){ return Math.max(REF||0, zeroHoje()); }
+function intD0(t){ const d=new Date(t); return Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()); }
+function intDM(t){ const d=new Date(t); return String(d.getUTCDate()).padStart(2,'0')+'/'+String(d.getUTCMonth()+1).padStart(2,'0'); }
+function intPct(a,b){ return b? (a/b*100):0; }
+function pctNum(a,b){ return b? (a/b*100):0; }
+function intBars(mapa,total,limite,cor){
+  const arr=Array.from(mapa.entries()).sort((a,b)=>b[1]-a[1]).slice(0,limite||8);
+  if(!arr.length) return '<div class="mini">Sem dados no recorte.</div>';
+  const max=Math.max(1,...arr.map(x=>x[1]));
+  return arr.map(x=>'<div class="int-bar"><div class="nm" title="'+esc(x[0])+'">'+esc(x[0]||'(não informado)')+'</div>'+
+    '<div class="tk"><i style="width:'+Math.max(2,x[1]/max*100).toFixed(1)+'%;'+(cor?'background:'+cor:'')+'"></i></div>'+
+    '<div class="vl">'+nf(x[1])+'<small>('+pc(x[1],total)+')</small></div></div>').join('');
+}
+function cidKey(c){ return semAcento(c||'').toUpperCase().replace(/\s+/g,' ').trim(); }
+function intTipo(u){
+  const k=uniKey(u);
+  if(/^CTCE|^TECA/.test(k)) return 'CTCE';
+  if(/^CDD/.test(k)) return 'CDD';
+  if(/^AC /.test(k)) return 'AC';
+  if(/^CEE/.test(k)) return 'CEE';
+  if(/^CEL /.test(k)) return 'CEL';
+  if(/^AGF/.test(k)) return 'AGF';
+  if(/^PCL/.test(k)) return 'PCL';
+  return 'OUTROS';
+}
+function renderTimeline(){
+  if(!$('tlChart')) return;
+  const fim=intD0(intAgora()), ini=fim-29*INT_DIA;
+  const pts=[];
+  for(let E=ini;E<=fim;E+=INT_DIA){
+    let ab=0, la=0;
+    for(const o of VIEW){
+      const post=o.post||o.first;
+      if(!post || post>E+86399999) continue;
+      if(o.fim && o.fimT<=E+86399999) continue;
+      ab++;
+      if(o.dmeE && o.dmeE<=Math.min(E+86399999,intAgora())) la++;
+    }
+    pts.push({E:E,ab:ab,la:la});
+  }
+  const h=pts[pts.length-1], d14=pts[Math.max(0,pts.length-15)];
+  const baixas30=VIEW.filter(o=>o.fim&&o.fimT>=ini&&o.fimT<=fim+86399999).length;
+  const dAb=h.ab-d14.ab, dLa=h.la-d14.la;
+  $('tlKpis').innerHTML=
+    '<div class="int-kpi"><small>Estoque aberto no último dia</small><b>'+nf(h.ab)+'</b><span>'+nf(dAb>0?'+':'')+''+nf(dAb)+' em 14 dias</span></div>'+
+    '<div class="int-kpi ruim"><small>Vencido no último dia</small><b>'+nf(h.la)+'</b><span>'+(dLa>0?'+':'')+nf(dLa)+' em 14 dias</span></div>'+
+    '<div class="int-kpi neutro"><small>Pico do estoque</small><b>'+nf(Math.max(...pts.map(p=>p.ab)))+'</b><span>em '+intDM(pts.find(p=>p.ab===Math.max(...pts.map(q=>q.ab))).E)+'</span></div>'+
+    '<div class="int-kpi bom"><small>Baixas nos 30 dias</small><b>'+nf(baixas30)+'</b><span>'+gNum(baixas30/30,1)+' por dia em média</span></div>';
+
+  const W=720,H=268,L=42,R=10,T=46,B=30;
+  const max=Math.max(1,...pts.map(p=>p.ab));
+  const X=i=>L+(W-L-R)*(i/(pts.length-1));
+  const Y=v=>T+(H-T-B)*(1-v/max);
+  let g='';
+  for(let k=0;k<=3;k++){ const v=Math.round(max*k/3), y=Y(v); g+='<line x1="'+L+'" y1="'+y.toFixed(1)+'" x2="'+(W-R)+'" y2="'+y.toFixed(1)+'" stroke="#e6eef5"/>'+
+    '<text x="'+(L-6)+'" y="'+(y+3.5).toFixed(1)+'" text-anchor="end" font-size="9" fill="#8a9bab">'+nf(v)+'</text>'; }
+  const path=k=>pts.map((p,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(p[k]).toFixed(1)).join(' ');
+  const area=path('ab')+' L'+X(pts.length-1).toFixed(1)+' '+Y(0)+' L'+X(0).toFixed(1)+' '+Y(0)+' Z';
+  let xl='';
+  [0,7,14,21,29].forEach(i=>{ if(i<pts.length) xl+='<text x="'+X(i).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle" font-size="9" fill="#8a9bab">'+intDM(pts[i].E)+'</text>'; });
+  const marcar=new Set([0,pts.length-1]);
+  for(let i=0;i<pts.length;i+=3) marcar.add(i);
+  let pico=0; pts.forEach((p,i)=>{ if(p.ab>pts[pico].ab) pico=i; }); marcar.add(pico);
+  let picoI=0; pts.forEach((p,i)=>{ if(p.ab>pts[picoI].ab) picoI=i; });
+  const idxs=Array.from(marcar).sort((a,b)=>a-b);
+  const prio=i=> i===picoI?2:(i===pts.length-1?1:0);
+  const kept=[];
+  idxs.forEach(i=>{ if(pts[i].ab<=0) return; const x=X(i);
+    if(kept.length){ const ant=kept[kept.length-1];
+      if(x-X(ant)<46){ if(prio(i)>prio(ant)) kept[kept.length-1]=i; return; } }
+    kept.push(i);
+  });
+  let labs='', prevAb=-1;
+  kept.forEach(i=>{ const p=pts[i], prim=i===0, ult=i===pts.length-1;
+    if(p.ab===prevAb && !ult) return; prevAb=p.ab;
+    const an=prim?'start':(ult?'end':'middle');
+    const lx=prim?X(i):(ult?X(i)-2:X(i));
+    labs+='<text x="'+lx.toFixed(1)+'" y="'+Math.max(12,Y(p.ab)-7).toFixed(1)+'" text-anchor="'+an+'" font-size="9.5" font-weight="700" fill="#0b5aa5" stroke="#fff" stroke-width="2.6" paint-order="stroke">'+nf(p.ab)+'</text>';
+    if(p.la>0 && (Y(p.ab)-Y(p.la))>30) labs+='<text x="'+lx.toFixed(1)+'" y="'+(Y(p.la)+13).toFixed(1)+'" text-anchor="'+an+'" font-size="9" font-weight="700" fill="#c0392b" stroke="#fff" stroke-width="2.6" paint-order="stroke">'+nf(p.la)+'</text>';
+  });
+  $('tlChart').innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Estoque aberto e vencido por dia" data-tl=\''+JSON.stringify(pts.map(p=>[p.ab,p.la]))+'\' data-l="'+L+'" data-r="'+R+'" data-w="'+W+'" data-h="'+H+'" data-t="'+T+'" data-b="'+B+'">'+
+    '<defs><linearGradient id="gAb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b5aa5" stop-opacity=".22"/><stop offset="1" stop-color="#0b5aa5" stop-opacity="0"/></linearGradient></defs>'+
+    g+'<path d="'+area+'" fill="url(#gAb)"/>'+
+    '<path d="'+path('ab')+'" fill="none" stroke="#0b5aa5" stroke-width="2.4"/>'+
+    '<path d="'+path('la')+'" fill="none" stroke="#c0392b" stroke-width="2"/>'+xl+
+    '<circle cx="'+X(pts.length-1).toFixed(1)+'" cy="'+Y(h.ab).toFixed(1)+'" r="3.5" fill="#0b5aa5"/>'+
+    '<circle cx="'+X(pts.length-1).toFixed(1)+'" cy="'+Y(h.la).toFixed(1)+'" r="3.5" fill="#c0392b"/>'+labs+
+    '<g id="tlCursor" style="display:none"><line id="tlLine" y1="'+(T)+'" y2="'+(H-B)+'" stroke="#8aa6bd" stroke-dasharray="3 3"/><circle id="tlCa" r="4" fill="#0b5aa5" stroke="#fff" stroke-width="1.5"/><circle id="tlCl" r="4" fill="#c0392b" stroke="#fff" stroke-width="1.5"/></g>'+
+    '</svg><div id="tlTip" class="tl-tip" hidden></div>'+
+    '<div class="scope-bar" style="margin:2px 0 0"><span class="sb-lbl" style="color:#0b5aa5">■</span><span>Estoque aberto</span><span class="sb-lbl" style="color:#c0392b;margin-left:10px">■</span><span>Vencido no dia</span></div>';
+  const det='<details class="tl-det"><summary>Ver dia a dia ('+pts.length+' dias)</summary><div class="tw"><table class="tab-fase"><thead><tr><th>Dia</th><th class="n">Estoque aberto</th><th class="n">Vencido no dia</th><th class="n">% vencido</th></tr></thead><tbody>'+
+    pts.slice().reverse().map(p=>'<tr><td>'+intDM(p.E)+'</td><td class="n">'+nf(p.ab)+'</td><td class="n" style="color:#a32d20;font-weight:700">'+nf(p.la)+'</td><td class="n">'+gNum(pctNum(p.la,p.ab),1)+'%</td></tr>').join('')+
+    '</tbody></table></div></details>';
+  if($('tlTable')) $('tlTable').innerHTML=det;
+  $('notaTl').innerHTML='Reconstrução a partir do primeiro evento de cada objeto. Objetos que já saíram da extração não aparecem; por isso o começo da série pode ficar abaixo do real. A linha vermelha é o vencido <b>naquele dia</b>, não o vencido de hoje.';
+}
+function renderRisk(){
+  if(!$('riskBody')) return;
+  const hoje=intD0(intAgora());
+  const ab=VIEW.filter(o=>!o.fim);
+  const venc=ab.filter(o=>o.late);
+  const h48=ab.filter(o=>o.dmeE && o.dmeE>=hoje && o.dmeE<hoje+2*INT_DIA);
+  const h72=ab.filter(o=>o.dmeE && o.dmeE>=hoje && o.dmeE<hoje+3*INT_DIA);
+  $('riskKpis').innerHTML=
+    '<div class="int-kpi ruim"><small>Vencidos abertos</small><b>'+nf(venc.length)+'</b><span>'+pc(venc.length,ab.length||1)+' do estoque</span></div>'+
+    '<div class="int-kpi"><small>Vence no último dia</small><b>'+nf(ab.filter(o=>o.dmeE&&intD0(o.dmeE)===hoje).length)+'</b><span>ainda dá para baixar</span></div>'+
+    '<div class="int-kpi"><small>Até 48h</small><b>'+nf(h48.length)+'</b><span>hoje + amanhã</span></div>'+
+    '<div class="int-kpi"><small>Até 72h</small><b>'+nf(h72.length)+'</b><span>janela curta</span></div>';
+  const g=new Map();
+  ab.forEach(o=>{ const r=respDe(o); const k=r.enc?'EM TRÂNSITO':(r.u||'SEM UNIDADE'); let d=g.get(k); if(!d){d={n:0,v:0,s:0,b:0};g.set(k,d);} d.n++; if(o.late)d.v++; if(o.dmeE&&o.dmeE>=hoje&&o.dmeE<hoje+3*INT_DIA)d.s++; });
+  const lim=intD0(REF||zeroHoje())-6*INT_DIA;
+  VIEW.forEach(o=>{ if(!o.fim||!o.ent) return; if(o.fimT<lim) return; const k=o.uni||'—'; let d=g.get(k); if(!d){d={n:0,v:0,s:0,b:0};g.set(k,d);} d.b++; });
+  const rows=[...g.entries()].filter(x=>x[1].n>0).map(([k,d])=>({u:k,d:d}));
+  rows.sort((a,b)=>b.d.v-a.d.v || b.d.n-a.d.n);
+  $('riskBody').innerHTML=rows.slice(0,12).map(x=>{
+    const ritmo=x.d.b/7, dias=ritmo>0? x.d.n/ritmo : null;
+    return '<tr><td><b>'+esc(x.u)+'</b></td><td class="n">'+nf(x.d.n)+'</td><td class="n" style="color:#a32d20;font-weight:800">'+nf(x.d.v)+'</td>'+
+      '<td class="n">'+nf(x.d.s)+'</td><td class="n">'+nf(x.d.b)+'</td>'+
+      '<td class="n">'+(dias==null? '<span class="mini">sem baixa</span>' : (dias>90?'90+':gNum(dias,0)+' d'))+'</td></tr>';
+  }).join('') || '<tr><td colspan="6"><div class="ges-vazio">Sem estoque aberto no recorte.</div></td></tr>';
+}
+function renderFlow(){
+  if(!$('flowChart')) return;
+  const fim=intD0(REF||zeroHoje()), ini=fim-13*INT_DIA;
+  const dias=[];
+  for(let E=ini;E<=fim;E+=INT_DIA) dias.push({E:E,ent:0,bai:0});
+  const idx=E=>Math.round((E-ini)/INT_DIA);
+  VIEW.forEach(o=>{ if(o.post){ const i=idx(intD0(o.post)); if(i>=0&&i<dias.length) dias[i].ent++; } if(o.fim&&o.ent){ const i=idx(intD0(o.fimT)); if(i>=0&&i<dias.length) dias[i].bai++; } });
+  const ent=dias.reduce((s,d)=>s+d.ent,0), bai=dias.reduce((s,d)=>s+d.bai,0);
+  const ab=VIEW.filter(o=>!o.fim).length, ritmo=bai/14, diasEst=ritmo>0? (ab/ritmo) : null;
+  $('flowKpis').innerHTML=
+    '<div class="int-kpi"><small>Entradas 14d</small><b>'+nf(ent)+'</b><span>postagens</span></div>'+
+    '<div class="int-kpi bom"><small>Baixas 14d</small><b>'+nf(bai)+'</b><span>entregas</span></div>'+
+    '<div class="int-kpi '+(ent>bai?'ruim':'neutro')+'"><small>Saldo</small><b>'+(ent-bai>0?'+':'')+nf(ent-bai)+'</b><span>'+(ent>bai?'acumulando':'drenando')+'</span></div>'+
+    '<div class="int-kpi"><small>Estoque em dias</small><b>'+(diasEst==null?'—':gNum(diasEst,0))+'</b><span>no ritmo atual</span></div>';
+  const vals=dias.map(d=>Math.max(d.ent,d.bai)).slice().sort((a,b)=>a-b);
+  const corte=vals[Math.max(0,Math.floor(vals.length*0.9))]||1;
+  const max=Math.max(1,corte);
+  $('flowChart').innerHTML='<div style="display:flex;align-items:flex-end;gap:4px;height:150px;padding-top:6px">'+dias.map((d,i)=>{
+    const he=Math.max(1,Math.min(d.ent,max)/max*118), hb=Math.max(1,Math.min(d.bai,max)/max*118);
+    return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px" title="'+intDM(d.E)+': '+d.ent+' entradas, '+d.bai+' baixas">'+
+      '<div style="display:flex;align-items:flex-end;gap:2px;height:120px"><span style="width:7px;height:'+he.toFixed(0)+'px;background:#7fb2d8;border-radius:3px 3px 0 0"></span><span style="width:7px;height:'+hb.toFixed(0)+'px;background:#1a9e5c;border-radius:3px 3px 0 0"></span></div>'+
+      '<div style="font-size:9px;color:#8a9bab;white-space:nowrap">'+(i%2===0?intDM(d.E):'')+'</div></div>';
+  }).join('')+'</div><div class="scope-bar" style="margin:2px 0 0"><span class="sb-lbl" style="color:#7fb2d8">■</span><span>Entradas</span><span class="sb-lbl" style="color:#1a9e5c;margin-left:10px">■</span><span>Baixas</span></div>';
+  $('notaFlow').innerHTML='Entradas usam a data de postagem do objeto; baixas usam a data da entrega. A escala corta no percentil 90 para o pico de postagem não achatar o resto (o valor exato aparece ao passar o mouse).  O estoque em dias divide o estoque aberto pela média diária de baixas dos últimos 14 dias — se a unidade não baixa, não há como estimar.';
+}
+function renderAddr(){
+  if(!$('addrBars')) return;
+  const PAT=/AUSENTE|MUDOU|NAO EXISTE|RECUSAD|DESCONHECID|PROCURAD|ENDERECO INSUFICIENTE|NAO INFORMADO/;
+  const objs=[]; const sits=new Map(); const cid=new Map(); let devol=0;
+  for(const o of VIEW){
+    let hit=false;
+    for(const e of (o.evs||[])){
+      const s=semAcento(e.sit||'').toUpperCase();
+      if(PAT.test(s)){ hit=true; sits.set(e.sit,(sits.get(e.sit)||0)+1); { const ck=cidKey(e.cid); if(ck) cid.set(ck,(cid.get(ck)||0)+1); } }
+    }
+    if(hit){ objs.push(o); if(o.devRem || /DISTRIBUIDO AO REMETENTE/.test(semAcento(o.fimSit||'').toUpperCase())) devol++; }
+  }
+  $('addrKpis').innerHTML=
+    '<div class="int-kpi"><small>Com tentativa falha</small><b>'+nf(objs.length)+'</b><span>'+pc(objs.length,VIEW.length||1)+' do recorte</span></div>'+
+    '<div class="int-kpi ruim"><small>Viraram devolução</small><b>'+nf(devol)+'</b><span>'+pc(devol,objs.length||1)+' dos casos</span></div>'+
+    '<div class="int-kpi neutro"><small>Cidades afetadas</small><b>'+nf(cid.size)+'</b><span>onde a tentativa falhou</span></div>'+
+    '<div class="int-kpi"><small>Vencidos entre eles</small><b>'+nf(objs.filter(o=>o.late).length)+'</b><span>atraso com causa de endereço</span></div>';
+  $('addrBars').innerHTML='<div class="ges-fluxo-title" style="margin-top:2px">Motivos registrados</div>'+intBars(sits,objs.length||1,6,'#c0392b')+
+    '<div class="mini" style="margin:2px 0 0">Um mesmo objeto pode ter mais de um motivo; por isso a soma passa de 100%.</div>'+
+    '<div class="ges-fluxo-title" style="margin-top:12px">Cidades com mais falhas</div>'+intBars(cid,objs.length||1,6,'#d98a00');
+}
+function renderLoop(){
+  if(!$('loopBars')) return;
+  const loops=[]; const porUni=new Map(); let extra=0; const gaps=[];
+  for(const o of VIEW){
+    const seq=[]; (o.evs||[]).forEach(e=>{ if(!e.uni) return; if(!seq.length||!uniEq(seq[seq.length-1],e.uni)) seq.push(e.uni); });
+    const c=new Map(); seq.forEach(u=>{ const k=uniKey(u); c.set(k,(c.get(k)||0)+1); });
+    let hit=false;
+    c.forEach((v,k)=>{ if(v>1){ hit=true; extra+=v-1; porUni.set(k,(porUni.get(k)||0)+1); } });
+    if(hit){ loops.push(o); if(o.first&&o.last) gaps.push((o.last-o.first)/INT_DIA); }
+  }
+  const med=mediana(gaps);
+  $('loopKpis').innerHTML=
+    '<div class="int-kpi ruim"><small>Com reincidência</small><b>'+nf(loops.length)+'</b><span>'+pc(loops.length,VIEW.length||1)+' do recorte</span></div>'+
+    '<div class="int-kpi"><small>Passagens extras</small><b>'+nf(extra)+'</b><span>retrabalho acumulado</span></div>'+
+    '<div class="int-kpi neutro"><small>Tempo total mediano</small><b>'+(med==null?'—':gNum(med,0))+'</b><span>dias do 1º ao último evento</span></div>'+
+    '<div class="int-kpi bom"><small>Vencidos no grupo</small><b>'+nf(loops.filter(o=>o.late).length)+'</b><span>'+pc(loops.filter(o=>o.late).length,loops.length||1)+' dos reincidentes</span></div>';
+  const nome=k=>{ for(const o of VIEW){ for(const e of (o.evs||[])){ if(uniKey(e.uni)===k) return e.uni; } } return k; };
+  const m=new Map(); porUni.forEach((v,k)=>m.set(nome(k),v));
+  $('loopBars').innerHTML='<div class="ges-fluxo-title" style="margin-top:2px">Unidades que recebem o mesmo objeto mais de uma vez</div>'+intBars(m,loops.length||1,6,'#8a4fb5');
+}
+function renderGeo(){
+  if(!$('geoBars')) return;
+  const m=new Map(); let tot=0;
+  VIEW.filter(o=>!o.fim&&o.late).forEach(o=>{ const e=(o.evs||[])[o.evs.length-1]||{}; const c=cidKey(e.cid)||'—'; m.set(c,(m.get(c)||0)+1); tot++; });
+  $('geoBars').innerHTML='<div class="ges-fluxo-title">Cidade da unidade onde está parado</div>'+intBars(m,tot,8,'#0b5aa5')+
+    '<div class="mini" style="margin-top:6px;line-height:1.45">'+nf(tot)+' vencidos sem baixa no recorte; mostrando as 8 cidades com mais. Nomes agrupados ignorando caixa e acento — CASTANHAL e Castanhal viram uma linha só.</div>';
+}
+function renderRotas(){
+  if(!$('rotaBars')) return;
+  const m=new Map(); let tot=0, soma=0, fora=0;
+  for(const o of VIEW){
+    for(const e of (o.exps||[])){
+      if(!e.arr || !e.t || !e.to) continue;
+      const d=(e.arr-e.t)/INT_DIA; if(d<0||d>120) continue;
+      const k=(e.f||'?')+' → '+e.to;
+      let x=m.get(k); if(!x){ x={n:0,d:[],fora:0}; m.set(k,x); }
+      x.n++; x.d.push(d); tot++; soma+=d;
+      if(o.dmeE && e.arr>o.dmeE){ x.fora++; fora++; }
+    }
+  }
+  let rows=[...m.entries()].map(([k,v])=>({k:k,n:v.n,med:mediana(v.d),fora:v.fora}));
+  let min=3;
+  let val=rows.filter(r=>r.n>=min);
+  if(!val.length){ min=2; val=rows.filter(r=>r.n>=min); }
+  if(!val.length){ min=1; val=rows.filter(r=>r.n>=min); }
+  val.sort((a,b)=>b.med-a.med || b.n-a.n);
+  const top=val.slice(0,8);
+  const medGeral=mediana([...m.values()].flatMap(v=>v.d));
+  $('rotaKpis').innerHTML=
+    '<div class="int-kpi"><small>Rotas analisadas</small><b>'+nf(rows.filter(r=>r.n>=min).length)+'</b><span>com '+min+'+ viagens</span></div>'+
+    '<div class="int-kpi neutro"><small>Trânsito mediano</small><b>'+(medGeral==null?'—':gNum(medGeral,1))+'</b><span>dias por trecho</span></div>'+
+    '<div class="int-kpi '+(fora>tot*0.3?'ruim':'')+'"><small>Chegaram fora do prazo</small><b>'+pc(fora,tot||1)+'</b><span>'+nf(fora)+' de '+nf(tot)+' viagens</span></div>'+
+    '<div class="int-kpi ruim"><small>Rota mais lenta</small><b>'+(top.length?gNum(top[0].med,1)+' d':'—')+'</b><span title="'+(top.length?esc(top[0].k):'')+'">'+(top.length?esc(top[0].k):'sem dados')+'</span></div>';
+  if(!top.length){ $('rotaBars').innerHTML='<div class="mini">Sem expedições com chegada registrada no recorte.</div>'; $('notaRota').innerHTML=''; return; }
+  const max=Math.max(1,...top.map(r=>r.med));
+  $('rotaBars').innerHTML='<div class="ges-fluxo-title" style="margin-top:2px">Trecho (expedição → primeira leitura no destino)</div>'+top.map(r=>
+    '<div class="int-bar"><div class="nm" title="'+esc(r.k)+'">'+esc(r.k)+'</div>'+
+    '<div class="tk"><i style="width:'+Math.max(3,r.med/max*100).toFixed(1)+'%;background:linear-gradient(90deg,#e3a07f,#c0392b)"></i></div>'+
+    '<div class="vl">'+gNum(r.med,1)+' d<small>('+nf(r.n)+' viagens)</small></div></div>').join('');
+  $('notaRota').innerHTML='Mede o trecho, não o prazo total: da expedição do CTCE/TECA até a primeira leitura na unidade de destino. '+
+    'Chegada fora do prazo compara essa leitura com a data máxima de entrega do objeto. '+
+    'Só entram rotas com '+min+'+ viagens; leitura apenas de unitizador pode antecipar a chegada e encurtar o tempo.';
+}
+function renderDQ(){
+  if(!$('dqGrid')) return;
+  let semUni=0, semDme=0, unit=0, pos=0, um=0, incoer=0;
+  for(const o of VIEW){
+    if(!o.dmeE) semDme++;
+    if(o.n===1) um++;
+    const u=(o.evs||[]).filter(e=>!e.uni).length; semUni+=u;
+    const last=(o.evs||[])[o.n-1];
+    if(last && /UNITIZADOR/.test(semAcento(last.sit||'').toUpperCase())) unit++;
+    if(o.fim && (o.evs||[]).some(e=>e.t>o.fimT+60000 && !/UNITIZADOR/.test(semAcento(e.sit||'').toUpperCase()))) pos++;
+    for(let i=1;i<(o.evs||[]).length;i++){ if(o.evs[i].t<o.evs[i-1].t){ incoer++; break; } }
+  }
+  const item=(n,lbl,alerta)=>'<div class="dq'+(alerta&&n?' alerta':'')+'"><b>'+nf(n)+'</b><small>'+lbl+'</small></div>';
+  $('dqGrid').innerHTML=item(semUni,'eventos sem unidade informada',1)+item(semDme,'objetos sem data máxima de entrega',1)+
+    item(unit,'objetos com último registro só de unitizador',1)+item(pos,'entregues com evento depois da baixa',1)+
+    item(um,'objetos com um único evento',0)+item(incoer,'objetos com evento fora de ordem',1);
+  const tot=VIEW.length||1;
+  $('dqGrid').insertAdjacentHTML('beforeend','<div class="mini" style="grid-column:1/-1;line-height:1.45;margin-top:2px">Base do recorte: <b>'+nf(VIEW.length)+'</b> objetos. Os quatro primeiros itens são os que mais distorcem leitura; os dois últimos são indício de extração incompleta.</div>');
+}
+function renderBench(){
+  if(!$('benchBody')) return;
+  const porTipo=new Map();
+  VIEW.forEach(o=>{ if(!o.ent) return; const t=intTipo(o.uni); let d=porTipo.get(t); if(!d){d={un:new Set(),ent:0,ok:0,rates:new Map()};porTipo.set(t,d);} d.ent++; if(!o.late) d.ok++; const k=o.uni||'—'; const r=d.rates.get(k)||{e:0,o:0}; r.e++; if(!o.late) r.o++; d.rates.set(k,r); });
+  porTipo.forEach(d=>{ d.un=new Set(d.rates.keys()); d.arr=[]; d.rates.forEach(r=>{ if(r.e>=3) d.arr.push(r.o/r.e*100); }); d.arr.sort((a,b)=>a-b); });
+  const q=(a,p)=> a.length? a[Math.min(a.length-1,Math.max(0,Math.round((a.length-1)*p)))] : null;
+  const ordem=['CTCE','CDD','AC','CEE','CEL','AGF','PCL','OUTROS'];
+  const rows=ordem.filter(t=>porTipo.has(t)).map(t=>{
+    const d=porTipo.get(t);
+    const p25=q(d.arr,.25), p50=q(d.arr,.5), p75=q(d.arr,.75);
+    return '<tr><td><b>'+t+'</b></td><td class="n">'+nf(d.un.size)+'</td><td class="n">'+nf(d.ent)+'</td>'+
+      '<td class="n">'+pc(d.ok,d.ent)+'</td><td class="n">'+(p25==null?'—':gNum(p25,0)+'%')+'</td>'+
+      '<td class="n">'+(p50==null?'—':gNum(p50,0)+'%')+'</td><td class="n"><b>'+(p75==null?'—':gNum(p75,0)+'%')+'</b></td></tr>';
+  });
+  $('benchBody').innerHTML=rows.join('') || '<tr><td colspan="7"><div class="ges-vazio">Sem entregas suficientes para comparar.</div></td></tr>';
+  if($('notaBench')) $('notaBench').innerHTML='Quartis calculados só entre unidades com 3 ou mais entregas no recorte; “—” quando não há base. p75 é a meta relativa do tipo.';
+}
+function initIntel(){
+  const box=$('tlChart'); if(!box || box.dataset.on) return;
+  box.dataset.on='1';
+  const hide=()=>{ const t=$('tlTip'), c=$('tlCursor'); if(t) t.hidden=true; if(c) c.style.display='none'; };
+  const mover=(clientX,clientY)=>{
+    const svg=box.querySelector('svg'); const tip=$('tlTip'); if(!svg||!tip) return;
+    const r=svg.getBoundingClientRect(), W=+svg.dataset.w, L=+svg.dataset.l, R=+svg.dataset.r, H=+svg.dataset.h, T=+svg.dataset.t, B=+svg.dataset.b;
+    const dados=JSON.parse(svg.dataset.tl||'[]'); if(!dados.length) return;
+    let i=Math.round(((clientX-r.left)/r.width*W-L)/((W-L-R)/(dados.length-1)));
+    i=Math.max(0,Math.min(dados.length-1,i));
+    const x=L+((W-L-R)/(dados.length-1))*i;
+    const max=Math.max(1,...dados.map(d=>d[0]));
+    const y=v=>T+(H-T-B)*(1-v/max);
+    const cur=$('tlCursor'); if(cur){ cur.style.display='';
+      const ln=$('tlLine'); ln.setAttribute('x1',x); ln.setAttribute('x2',x);
+      const ca=$('tlCa'), cl=$('tlCl'); ca.setAttribute('cx',x); ca.setAttribute('cy',y(dados[i][0]));
+      cl.setAttribute('cx',x); cl.setAttribute('cy',y(dados[i][1]));
+    }
+    const px=x/W*r.width, py=y(dados[i][0])/H*r.height;
+    tip.hidden=false;
+    tip.innerHTML='<b>'+intDM(ptsE(i))+'</b><br><i>Estoque</i> '+nf(dados[i][0])+' · <i>Vencido</i> '+nf(dados[i][1]);
+    const tw=tip.offsetWidth||120, th=tip.offsetHeight||42;
+    let top=py-10, tr='translate(-50%,-100%)';
+    if(top-th<4){ top=py+14; tr='translate(-50%,0)'; }
+    top=Math.max(2,Math.min(r.height-th-2,top));
+    const left=Math.max(tw/2+2,Math.min(r.width-tw/2-2,px));
+    tip.style.transform=tr; tip.style.left=left+'px'; tip.style.top=top+'px';
+  };
+  function ptsE(i){ const fim=intD0(intAgora()); return fim-(29-i)*INT_DIA; }
+  box.addEventListener('mousemove',e=>mover(e.clientX,e.clientY));
+  box.addEventListener('mouseleave',hide);
+  box.addEventListener('touchstart',e=>{ const t=e.touches[0]; mover(t.clientX,t.clientY); },{passive:true});
+  box.addEventListener('touchmove',e=>{ const t=e.touches[0]; mover(t.clientX,t.clientY); },{passive:true});
+}
+
+function renderIntel(){
+  if(!document.getElementById('secIntel')) return;
+  try{
+    if(!VIEW.length){
+      ['tlKpis','riskKpis','flowKpis','addrKpis','loopKpis','rotaKpis'].forEach(id=>{ const e=$(id); if(e) e.innerHTML=''; });
+      ['tlChart','flowChart','addrBars','loopBars','geoBars','rotaBars','dqGrid'].forEach(id=>{ const e=$(id); if(e) e.innerHTML='<div class="mini">Sem objetos no recorte.</div>'; });
+      if($('riskBody')) $('riskBody').innerHTML='<tr><td colspan="6"><div class="ges-vazio">Sem objetos no recorte.</div></td></tr>';
+      if($('benchBody')) $('benchBody').innerHTML='<tr><td colspan="7"><div class="ges-vazio">Sem objetos no recorte.</div></td></tr>';
+      if($('tagIntel')) $('tagIntel').textContent='sem dados';
+      return;
+    }
+    renderTimeline(); renderRisk(); renderFlow(); renderAddr(); renderLoop(); renderGeo(); renderRotas(); renderDQ(); renderBench();
+    if($('tagIntel')) $('tagIntel').textContent=nf(VIEW.length)+' objetos · '+nf(VIEW.reduce((s,o)=>s+(o.evs||[]).length,0))+' eventos';
+  }catch(err){ console.error('intel',err); }
+}
+
 function renderVazio(porFiltro){
   const semBase=!OBJ.length;
   ['uniKpis','uniFluxo'].forEach(id=>{ const e=$(id); if(e){ e.innerHTML=''; e.style.display='none'; } });
@@ -3547,6 +3995,7 @@ function renderSintese(arr){
 
 function render(){
   renderGestao();
+  renderIntel();
   contarPrazos();
   if(!VIEW.length){ renderVazio(!!OBJ.length); return; }
   renderRecorte();
@@ -4747,6 +5196,7 @@ async function init(){
 
   // navegacao lateral
   initGestao();
+  initIntel();
   if($('evoScope')) $('evoScope').addEventListener('click',e=>{ const b=e.target.closest('[data-evo]'); if(!b) return; EVO_MODO=b.dataset.evo; renderEvo(VIEW); });
   $('railNav').addEventListener('click', e=>{ const b=e.target.closest('button[data-go]'); if(!b) return; irPara(b.dataset.go); });
   document.querySelectorAll('[data-cover-go]').forEach(b=>b.addEventListener('click',()=>irPara(b.dataset.coverGo)));
