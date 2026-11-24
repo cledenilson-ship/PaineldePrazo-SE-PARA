@@ -1390,6 +1390,12 @@ tbody tr.clic{cursor:pointer}
     <div class="uni-grid" id="uniKpis"></div>
     <div class="uni-flow" id="uniFluxo"></div>
 
+    <div class="uni-resp" id="uniResp">
+      <h4>Quem responde pelo que está sem baixa <span class="tag" id="tagResp">—</span></h4>
+      <div class="uni-resp-resumo" id="uniRespResumo"></div>
+      <div class="uni-rank" id="uniRespRank"></div>
+    </div>
+
     <h3 class="sub-h" style="margin-top:20px">Ranking de perdas na unidade onde o prazo venceu <span class="tag" id="tagUniHist">—</span></h3>
     <p class="lead">Quantidade e participação de cada unidade nas perdas do recorte, incluindo o que já foi entregue fora do prazo. Clique na linha para abrir os objetos e conferir as etapas.</p>
     <div class="uni-rank" id="uniRank"></div>
@@ -1630,6 +1636,19 @@ window.__UFDESTINO__={"AE052619341BR":"MA","AE052619369BR":"MA","AE062674245BR":
 .uni-rank .barra .nome{font-weight:700;color:#0b3b63}
 .uni-tab{max-height:520px;overflow:auto!important}
 .uni-tab table{min-width:560px}
+.uni-resp{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.uni-resp h4{margin:0 0 10px;font-size:12px;letter-spacing:.4px;text-transform:uppercase;color:#5a7086}
+.uni-resp-resumo{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.uni-resp-resumo .rr{border:1px solid var(--line);border-left:5px solid #0b5aa5;border-radius:12px;padding:10px 12px;background:#fbfdff}
+.uni-resp-resumo .rr span{display:block;font-size:10.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:#6a7e8f;line-height:1.3}
+.uni-resp-resumo .rr b{display:block;font-size:23px;font-weight:800;color:#0b3b63;margin:4px 0 2px}
+.uni-resp-resumo .rr i{font-style:normal;font-size:11.5px;color:#6a7e8f}
+.uni-resp-resumo .rr.prop{border-left-color:#c0392b}
+.uni-resp-resumo .rr.fora{border-left-color:#7a8b9a}
+.uni-resp-resumo .rr.trans{border-left-color:#d98a00}
+@media (max-width:900px){ .uni-resp-resumo{grid-template-columns:1fr 1fr} }
+@media (max-width:560px){ .uni-resp-resumo{grid-template-columns:1fr} }
+
 @media (max-width:760px){ .uni-tab table{min-width:0} }
 @media (max-width:900px){ .uni-grid{grid-template-columns:1fr 1fr} }
 @media (max-width:560px){ .uni-grid{grid-template-columns:1fr} .uni-foco select,.uni-foco input{min-width:0;width:100%} .uni-foco label{flex:1 1 100%} }
@@ -2674,6 +2693,7 @@ function renderTabela(){
   if(MODO==='obj' && TABONLY){
     if(TABONLY.tipo==='exp') arr=arr.filter(o=>COHORT_IDS.has(o.obj));
     else if(TABONLY.tipo==='perda') arr=arr.filter(o=>o.late && o.phu===TABONLY.uni);
+    else if(TABONLY.tipo==='resp') arr=arr.filter(o=>{const r=respDe(o); return !o.fim && r.u===TABONLY.uni && !r.enc;});
   }
   const total=arr.length;
   const paginas=Math.max(1,Math.ceil(total/PORPAG));
@@ -2716,7 +2736,7 @@ function renderTabela(){
   $('pagerInfo').textContent = total? ('Mostrando '+(ini+1)+'–'+Math.min(ini+PORPAG,total)+' de '+nf(total)+' '+(MODO==='obj'?'objetos':'eventos')) : '0 registros';
   $('pgPrev').disabled = pagina<=1;
   $('pgNext').disabled = pagina>=paginas;
-  $('tagTotal').textContent = (MODO==='obj'? nf(arr.length)+' objetos' : nf(VIEWEV.length)+' eventos') + (MODO==='obj'&&TABONLY? ' · '+(TABONLY.tipo==='exp'?('expedição do CTCE'+(FOCO?' para '+FOCO:'')):('perdeu o prazo em '+TABONLY.uni)) : '');
+  $('tagTotal').textContent = (MODO==='obj'? nf(arr.length)+' objetos' : nf(VIEWEV.length)+' eventos') + (MODO==='obj'&&TABONLY? ' · '+(TABONLY.tipo==='exp'?('expedição do CTCE'+(FOCO?' para '+FOCO:'')):(TABONLY.tipo==='resp'?('sem baixa parado em '+TABONLY.uni):('perdeu o prazo em '+TABONLY.uni))) : '');
   $('objChip').className='objchip'+(OBJF?' on':'');
   if(OBJF) $('objChipTxt').textContent='Objeto '+OBJF;
 }
@@ -3131,11 +3151,25 @@ function unidadesFoco(){
   for(const o of OBJ){
     const vistos=new Set();
     for(const e of (o.exps||[])){
+      if(!e.to || e.to==='nan') continue;
       if(vistos.has(e.to)) continue; vistos.add(e.to);
       m.set(e.to,(m.get(e.to)||0)+1);
     }
   }
   return Array.from(m.entries()).sort((a,b)=>b[1]-a[1]);
+}
+/* Quem responde por um objeto sem baixa:
+   - se o ultimo evento e expedicao para outra unidade, ja saiu daqui (responsavel = destino)
+   - senao, responsavel = unidade do ultimo evento */
+function respDe(o){
+  const evs=o.evs||[];
+  if(!evs.length) return {u:o.uni,enc:false,para:''};
+  const e=evs[evs.length-1];
+  const sit=semAcento(e.sit||'').toUpperCase().trim();
+  const exp=/^OBJETO\/UNITIZADOR EXPEDIDO/.test(sit);
+  const destino=(e.dst||'').trim();
+  const saiu=exp && destino && destino!==e.uni;
+  return {u:e.uni, enc:saiu, para:destino, sit:(e.sit||''), t:e.t};
 }
 function periodoPadrao(){
   let mn=0,mx=0;
@@ -3180,6 +3214,16 @@ function coorteAtual(){
     out.push({o:o,e:e});
   }
   return out;
+}
+function origensDe(c){
+  const m=new Map();
+  for(const x of c){ const f=x.e.f||'—'; m.set(f,(m.get(f)||0)+1); }
+  return [...m.entries()].sort((a,b)=>b[1]-a[1]);
+}
+function txtOrigens(c){
+  const o=origensDe(c); if(!o.length) return '';
+  if(o.length===1) return 'de '+o[0][0];
+  return 'de '+o.map(([f,n])=>f+' ('+nf(n)+')').join(' · ');
 }
 function resultadoExp(o,arrT){
   if(!arrT) return {k:'sem',t:'Sem chegada registrada',ord:1};
@@ -3226,11 +3270,11 @@ function renderUnidade(arr){
   if($('focoInfo')){
     const per=periodoExpedicao();
     $('focoInfo').innerHTML = FOCO
-      ? ('<b>'+esc(FOCO)+'</b> · '+nf(VIEW.length)+' objetos no recorte · '+nf(tot)+' expedidos pelo CTCE'+(per.de||per.ate?' no período informado':' em toda a base')+'. O painel inteiro está filtrado por esta unidade.')
+      ? ('<b>'+esc(FOCO)+'</b> · '+nf(VIEW.length)+' objetos no recorte · '+nf(tot)+' expedições para a unidade'+(per.de||per.ate?' no período informado':' em toda a base')+(c.length?(' · '+txtOrigens(c)):'')+'. O painel inteiro está filtrado por esta unidade.')
       : ('Nenhuma unidade escolhida: os quadros somam <b>'+nf(tot)+'</b> expedições de todas as unidades. Escolha a unidade do gestor para ver só ela.');
   }
   $('uniKpis').innerHTML=[
-    {c:'',l:'Expedidos pelo CTCE',v:nf(tot),s:(FOCO?('destino '+FOCO):'todas as unidades')+' · '+((function(){const per=periodoExpedicao();return (per.de||per.ate)?'período informado':'toda a base';})())},
+    {c:'',l:'Expedidos para a unidade',v:nf(tot),s:(FOCO?txtOrigens(c):'todas as unidades')+' · '+((function(){const per=periodoExpedicao();return (per.de||per.ate)?'período informado':'toda a base';})())},
     {c:'ok',l:'Chegaram até o prazo',v:nf(A.length),s:pct(A.length,tot)+' dos expedidos'},
     {c:'bad',l:'Chegaram depois do prazo',v:nf(nAt),s:pct(nAt,tot)+' dos expedidos'+(atrCheg!=null?(' · atraso mediano '+d1(atrCheg)+' d'):'')},
     {c:'warn',l:'Sem chegada registrada',v:nf(nSem),s:'sem leitura na unidade depois da expedição'}
@@ -3264,6 +3308,46 @@ function renderUnidade(arr){
       '<td data-l="Resultado"><b style="color:'+cor+'">'+esc(r.t)+'</b></td></tr>';
   }).join('') : '<tr><td colspan="7" style="text-align:center;padding:22px;color:#6b7d94">Nenhuma expedição do CTCE para '+(FOCO?esc(FOCO):'as unidades')+' no período. Confira a unidade e as datas.</td></tr>';
 
+  /* quem responde pelo que esta sem baixa */
+  const semB=VIEW.filter(o=>!o.fim);
+  const gResp=new Map(); let nTransito=0;
+  for(const o of semB){
+    const r=respDe(o);
+    if(r.enc){ nTransito++; continue; }        /* ja saiu: em transito, nao esta parado em unidade */
+    const k=r.u||'SEM UNIDADE';
+    let g=gResp.get(k); if(!g){ g={n:0,venc:0,enc:0}; gResp.set(k,g); }
+    g.n++; if(o.late) g.venc++;
+  }
+  const listaResp=[...gResp.entries()].sort((a,b)=>b[1].n-a[1].n);
+  const totResp=semB.length||1;
+  if($('tagResp')) $('tagResp').textContent=nf(semB.length)+' sem baixa · '+nf(semB.length-nTransito)+' parados em unidade · '+nf(nTransito)+' em trânsito';
+  if($('uniRespResumo')){
+    const alvo=FOCO||'';
+    const rr=semB.map(o=>({o:o,r:respDe(o)}));
+    const comUni=alvo?rr.filter(x=>x.r.u===alvo && !x.r.enc).length:0;
+    const transito=alvo?rr.filter(x=>x.r.enc && x.r.para===alvo && x.r.u!==alvo).length:0;
+    const fora=alvo?rr.filter(x=>x.r.u!==alvo && !x.r.enc).length:0;
+    const encOutros=alvo?rr.filter(x=>x.r.enc && x.r.para!==alvo).length:0;
+    const vencCom=alvo?rr.filter(x=>x.r.u===alvo && !x.r.enc && x.o.late).length:0;
+    const vencFora=alvo?rr.filter(x=>x.r.u!==alvo && !x.r.enc && x.o.late).length:0;
+    $('uniRespResumo').innerHTML = alvo
+      ? '<div class="rr prop"><span>Com a unidade (sem baixa)</span><b>'+nf(comUni)+'</b><i>'+pct(comUni,totResp)+' · '+nf(vencCom)+' vencidos</i></div>'+
+        '<div class="rr fora"><span>Ja em outra unidade</span><b>'+nf(fora)+'</b><i>'+pct(fora,totResp)+' · '+nf(vencFora)+' vencidos</i></div>'+
+        '<div class="rr fora"><span>Ja saiu para outra unidade</span><b>'+nf(encOutros)+'</b><i>'+pct(encOutros,totResp)+' · nao somam a unidade</i></div>'+
+        '<div class="rr trans"><span>Em transito para a unidade</span><b>'+nf(transito)+'</b><i>'+pct(transito,totResp)+' · ainda sem leitura</i></div>'
+      : '<div class="rr prop"><span>Sem baixa no recorte</span><b>'+nf(semB.length)+'</b><i>escolha a unidade em foco para separar</i></div>';
+  }
+  if($('uniRespRank')){
+    const maxR=listaResp.length?listaResp[0][1].n:1;
+    $('uniRespRank').innerHTML = listaResp.length? listaResp.slice(0,8).map(([k,g])=>{
+      const on=FOCO && k===FOCO;
+      return '<div class="barra click'+(on?' on':'')+'" data-resp="'+esc(k)+'" title="Clique para ver os objetos sem baixa parados nesta unidade">'+
+        '<div class="nome">'+esc(k)+'</div>'+
+        '<div class="trilho"><div class="fill" style="width:'+Math.max(3,g.n/maxR*100).toFixed(1)+'%;background:linear-gradient(90deg,#f0b8ae,#c0392b)"></div></div>'+
+        '<div class="qtd"><b>'+nf(g.n)+'</b> <span class="mini">('+pc(g.n,totResp)+' · '+nf(g.venc)+' venc.)</span></div></div>';
+    }).join('') : '<div class="mini">Nenhum objeto sem baixa neste recorte.</div>';
+  }
+
   /* ranking */
   const u=porUnidadePerda(VIEW), totL=VIEW.filter(o=>o.late).length||1, max=u.length?u[0].n:1;
   $('tagUniHist').textContent=nf(VIEW.filter(o=>o.late).length)+' perdas';
@@ -3287,7 +3371,7 @@ function initUnidade(){
   preencherFoco();
   $('focoUnidade').addEventListener('change',e=>{
     FOCO=e.target.value||'';
-    F.expOnly=false; TABONLY=null;
+    F.expOnly=false;
     aplicarInterno(); render();
     if(FOCO) irPara('secUnidade');
   });
@@ -3295,22 +3379,26 @@ function initUnidade(){
   $('btnExpAplicar').addEventListener('click',()=>{ renderUnidade(VIEW); atualizarRelatorioUnidade(true); atualizarRelatorio(); });
   $('btnExpTabela').addEventListener('click',()=>{
     if(!COHORT.length){ alert('Nenhum objeto na expedição desta unidade no período.'); return; }
-    TABONLY={tipo:'exp'}; F.expOnly=false; aplicarInterno(); setModo('obj'); render(); irPara('secTab');
+    F.expOnly=true; aplicarInterno(); setModo('obj'); render(); irPara('secTab');
   });
   $('btnExpXlsx').addEventListener('click',()=>baixarPlanilhaExpedicao());
   $('uniRank').addEventListener('click',e=>{
     const b=e.target.closest('[data-unihist]'); if(!b) return;
-    TABONLY={tipo:'perda',uni:b.getAttribute('data-unihist')}; F.uniPerda=''; F.expOnly=false;
+    F.uniPerda=b.getAttribute('data-unihist'); F.expOnly=false;
+    aplicarInterno(); setModo('obj'); render(); irPara('secTab');
+  });
+  if($('uniRespRank')) $('uniRespRank').addEventListener('click',e=>{
+    const b=e.target.closest('[data-resp]'); if(!b) return;
+    TABONLY={tipo:'resp',uni:b.getAttribute('data-resp')}; F.uniPerda=''; F.expOnly=false;
     aplicarInterno(); setModo('obj'); render(); irPara('secTab');
   });
   $('tabExp').addEventListener('click',e=>{
     const tr=e.target.closest('tr[data-objexp]'); if(!tr) return;
-    OBJF=tr.getAttribute('data-objexp'); F.expOnly=false; TABONLY=null;
+    OBJF=tr.getAttribute('data-objexp'); F.expOnly=false;
     aplicarInterno(); setModo('evt'); render(); irPara('secTab');
   });
   $('btnRelUni').addEventListener('click',()=>{ atualizarRelatorioUnidade(true); });
   const bc=$('btnCopiarUni'); if(bc) bc.addEventListener('click',copiarRelatorioUnidade);
-  if(typeof VIEW!=='undefined' && VIEW.length){ renderUnidade(VIEW); atualizarRelatorioUnidade(true); }
   $('btnTxtUni').addEventListener('click',()=>{
     const t=($('textoUnidade')&&$('textoUnidade').value)||textoRelatorioUnidade();
     baixar(new Blob([t],{type:'text/plain;charset=utf-8'}),'Relatorio_Unidade_'+(semAcento(FOCO||'TODAS').replace(/[^A-Z0-9]+/g,'_'))+'_'+dataArquivo()+'.txt');
@@ -3350,7 +3438,7 @@ function textoRelatorioUnidade(){
   L.push('PAINEL DA UNIDADE — '+String(uni).toUpperCase());
   L.push('Superintendência Estadual do Pará · GERAE | GEOPE · Painel de Prazo');
   L.push('Expedição do CTCE: '+((p.de||p.ate)?((p.de?iso(p.de):'início')+' a '+(p.ate?iso(p.ate):'hoje')):'toda a base')+' · atualizado em '+dh(REF));
-  L.push('Objetos expedidos pelo CTCE para a unidade: '+nf(tot)+'.');
+  L.push('Objetos expedidos para a unidade: '+nf(tot)+(c.length?(' ('+txtOrigens(c)+')'):'')+'.');
   L.push('');
   L.push('1. CHEGADA NA UNIDADE');
   L.push('• '+nf(A.length)+' chegaram até a data máxima de entrega ('+pct(A.length,tot)+' dos expedidos).');
@@ -3384,7 +3472,27 @@ function textoRelatorioUnidade(){
   if(abertos.length) abertos.forEach(x=>L.push('• '+x.o.obj+' — chegou '+(x.e.arr?dh(x.e.arr):'sem registro')+' · prazo '+dh(x.o.dmeE)+' · '+(x.o.sit||'sem situação')));
   else L.push('• Nenhum objeto sem baixa no recorte.');
   L.push('');
-  L.push('6. CONCLUSÃO DA UNIDADE');
+  L.push('6. QUEM RESPONDE PELO QUE ESTÁ SEM BAIXA (todo o recorte)');
+  const semB=VIEW.filter(o=>!o.fim), alvoR=FOCO||'';
+  const rrS=semB.map(o=>({o:o,r:respDe(o)}));
+  const comU=alvoR?rrS.filter(x=>x.r.u===alvoR && !x.r.enc):[];
+  const emOutra=alvoR?rrS.filter(x=>x.r.u!==alvoR && !x.r.enc):[];
+  const saiu=alvoR?rrS.filter(x=>x.r.enc && x.r.para!==alvoR):[];
+  const emTransito=alvoR?rrS.filter(x=>x.r.enc && x.r.para===alvoR && x.r.u!==alvoR):[];
+  L.push('Total sem baixa no recorte: '+nf(semB.length)+' objetos.');
+  if(alvoR){
+    L.push('• Com a unidade, ainda não encaminhados: '+nf(comU.length)+' ('+pct(comU.length,semB.length)+' do total) · '+nf(comU.filter(x=>x.o.late).length)+' já vencidos. É esta a pendência que cabe à unidade.');
+    L.push('• Em outra unidade (agência, centro de entrega ou CTCE): '+nf(emOutra.length)+' — não somam à pendência da unidade.');
+    L.push('• Já saíram para outra unidade: '+nf(saiu.length)+' — também não somam.');
+    L.push('• Em trânsito para a unidade, ainda sem leitura: '+nf(emTransito.length)+'.');
+    const porU={}; rrS.filter(x=>x.r.u!==alvoR).forEach(x=>{ porU[x.r.u]=(porU[x.r.u]||0)+1; });
+    const top=Object.entries(porU).sort((a,b)=>b[1]-a[1]).slice(0,5);
+    if(top.length) L.push('Onde estão os que não são da unidade: '+top.map(([u,n])=>u+' '+nf(n)).join(' · ')+'.');
+  } else {
+    L.push('Escolha a unidade em foco para separar o que é pendência dela do que já está em outra unidade.');
+  }
+  L.push('');
+  L.push('7. CONCLUSÃO DA UNIDADE');
   L.push('De cada 100 objetos que o CTCE expediu para a unidade, '+pct(A.length,tot).replace(',','.')+' chegaram dentro do prazo. '+
     'Dos que chegaram no prazo, '+pct(aOK.length,A.length)+' foram entregues também no prazo; '+nf(aFora.length)+' foram entregues depois e '+nf(aAberto.length)+' seguem sem baixa.');
   L.push('Ação sugerida: priorizar a fila de entrega dos '+nf(aAberto.length)+' objetos que chegaram no prazo e ainda não têm baixa, revisar a distribuição interna da unidade e acompanhar semanalmente a chegada do CTCE para reduzir o volume que já chega vencido.');
