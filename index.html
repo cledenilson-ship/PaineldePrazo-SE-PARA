@@ -1210,6 +1210,81 @@ tbody tr.clic{cursor:pointer}
 .qualidade-nota{font-size:11px;line-height:1.5;color:#667f91;margin:11px 0 0}
 @media(max-width:620px){.qualidade-kpis{grid-template-columns:1fr}}
 </style>
+<style>
+/* ---------- gestao por unidade ---------- */
+.ges-bloco{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:14px 0;box-shadow:var(--shadow)}
+.ges-bloco h3{margin:0 0 4px;font-size:15px;color:#0b3b63}
+.ges-sub{margin:0 0 12px;font-size:12px;color:#6a7e8f;line-height:1.45}
+.ges-head{display:flex;gap:12px;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;margin-bottom:10px}
+.ges-ctrl{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;font-size:11px;font-weight:700;color:#5a7086;text-transform:uppercase;letter-spacing:.3px}
+.ges-ctrl label{display:flex;flex-direction:column;gap:4px}
+.ges-ctrl input{font-family:inherit;font-size:13px;font-weight:600;color:var(--txt);padding:7px 9px;border:1px solid var(--line);border-radius:9px;background:#fff;width:120px}
+.ges-ctrl button{border:1px solid #bcd6ea;background:#f2f8fd;color:#0b5aa5;font-family:inherit;font-weight:800;font-size:11.5px;border-radius:999px;padding:7px 11px;cursor:pointer}
+.ges-ctrl button:hover{background:#e3f0fa}
+.ges-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:8px 0 12px}
+.ges-kpi{border:1px solid var(--line);border-left:5px solid #0b5aa5;border-radius:12px;padding:10px 12px;background:#fbfdff}
+.ges-kpi small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:#6a7e8f}
+.ges-kpi b{display:block;font-size:22px;color:#0b3b63;line-height:1.2;margin-top:3px}
+.ges-kpi span{font-size:11.5px;color:#6a7e8f}
+.ges-kpi.bom{border-left-color:#1a9e5c}
+.ges-kpi.ruim{border-left-color:#c0392b}
+.ges-kpi.neutro{border-left-color:#7a8b9a}
+.ges-badge{display:inline-block;border-radius:999px;padding:3px 9px;font-size:10.5px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;white-space:nowrap}
+.ges-badge.melhor{background:#e3f6ec;color:#137a45}
+.ges-badge.pior{background:#fde8e5;color:#a32d20}
+.ges-badge.est{background:#eef3f7;color:#5a7086}
+.ges-badge.fraca{background:#fff6d6;color:#8a6a00}
+#tabCmp td,#tabRespOp td{font-size:12px}
+#tabCmp tr[data-cmp],#tabRespOp tr[data-resp-op]{cursor:pointer}
+#tabCmp tr[data-cmp]:hover,#tabRespOp tr[data-resp-op]:hover{background:#f2f8fd}
+.ges-resp-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;align-items:start}
+.ges-fluxo-title{font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#5a7086;margin:0 0 8px}
+.ges-fluxo{display:flex;align-items:center;gap:8px;font-size:12px;color:#17324a;padding:5px 0;border-bottom:1px dashed #e6eef5}
+.ges-fluxo:last-child{border-bottom:0}
+.ges-fluxo .fx{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ges-fluxo .fx b{color:#0b3b63}
+.ges-fluxo .fn{font-weight:800;color:#c0392b}
+.ges-alertas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px}
+.ges-alerta{border:1px solid var(--line);border-left:6px solid #d98a00;border-radius:14px;padding:12px 14px;background:#fffdf7;display:flex;flex-direction:column;gap:6px}
+.ges-alerta.crit{border-left-color:#c0392b;background:#fff8f7}
+.ges-alerta .at{font-size:9.5px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#a06a00}
+.ges-alerta.crit .at{color:#a32d20}
+.ges-alerta h4{margin:0;font-size:13px;color:#0b3b63;line-height:1.3}
+.ges-alerta .an{font-size:26px;font-weight:800;color:#c0392b;line-height:1.1}
+.ges-alerta .an span{font-size:11px;font-weight:700;color:#6a7e8f;margin-left:4px}
+.ges-alerta .am{font-size:11.5px;color:#5a7086;line-height:1.4}
+.ges-alerta button{margin-top:4px;align-self:flex-start;border:1px solid #e0b4ad;background:#fff;color:#a32d20;font-family:inherit;font-weight:800;font-size:11px;border-radius:999px;padding:6px 10px;cursor:pointer}
+.ges-alerta button:hover{background:#fdece9}
+.ges-vazio{grid-column:1/-1;padding:18px;text-align:center;color:#6b7d94;font-size:12.5px;border:1px dashed var(--line);border-radius:12px;background:#fbfdff}
+#secGestao{scroll-margin-top:112px}
+.scope-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0 4px;font-size:11.5px;color:#5a7086}
+.scope-bar .sb-lbl{font-weight:800;text-transform:uppercase;letter-spacing:.4px;font-size:10.5px}
+.scope-bar .sb{border:1px solid #cfe0ee;background:#fff;color:#22506f;font-family:inherit;font-weight:700;font-size:11.5px;border-radius:999px;padding:5px 11px;cursor:pointer}
+.scope-bar .sb b{color:#0b5aa5;margin-left:4px}
+.scope-bar .sb.on{background:#0b5aa5;border-color:#0b5aa5;color:#fff}
+.scope-bar .sb.on b{color:#dff0ff}
+.scope-bar .sb-note{color:#7a8b9a;font-size:11px}
+.esc{border:1px solid #dbe8f2;border-left:4px solid #0b5aa5;background:#f7fbfe;border-radius:10px;padding:9px 11px;margin:0 0 10px}
+.esc-t{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:#22506f;margin-bottom:5px}
+.esc-l{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:#456}
+.esc-l b{color:#0b3b63}
+.esc-mini{font-size:11px;color:#6a7e8f;margin-top:4px;line-height:1.4}
+.ges-hint{display:none;font-size:11px;color:#7a8b9a;margin:2px 0 6px}
+@media (max-width:760px){.ges-hint{display:block}}
+#tabRespOp th,#tabRespOp td,#tabCmp th,#tabCmp td{padding-left:9px;padding-right:9px}
+#tabRespOp th{font-size:10.5px}
+.ges-tab{overflow-x:auto;-webkit-overflow-scrolling:touch}
+@media (max-width:1100px){ .ges-alertas{grid-template-columns:1fr 1fr} .ges-resp-grid{grid-template-columns:1fr} }
+@media (max-width:760px){
+  #tabCmp,#tabRespOp{min-width:600px;display:table}
+  #tabCmp thead,#tabRespOp thead{display:table-header-group}
+  #tabCmp tbody,#tabRespOp tbody{display:table-row-group}
+  #tabCmp tr,#tabRespOp tr{display:table-row}
+  #tabCmp th,#tabCmp td,#tabRespOp th,#tabRespOp td{display:table-cell;white-space:nowrap;font-size:11.5px;padding:8px 7px}
+  #tabCmp th:first-child,#tabCmp td:first-child,#tabRespOp th:first-child,#tabRespOp td:first-child{position:sticky;left:0;background:#fff;z-index:1;box-shadow:1px 0 0 #e3ecf3}
+  #tabCmp thead th:first-child,#tabRespOp thead th:first-child{background:#eef5fa}
+  .ges-kpis{grid-template-columns:1fr 1fr} .ges-alertas{grid-template-columns:1fr} .ges-bloco{padding:14px 12px} .ges-ctrl input{width:100%} }
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -1222,6 +1297,7 @@ tbody tr.clic{cursor:pointer}
     </div>
   </div>
   <div class="tb-right">
+    <div class="tb-chip tb-chip-rec" id="chipRecorte" hidden>Recorte ativo</div>
     <div class="tb-chip" id="chipBase">Base: —</div>
     <div class="tb-chip" id="chipObj">Objetos: —</div>
     <div class="tb-chip" id="chipPrazo">Fora do prazo: —</div>
@@ -1237,6 +1313,8 @@ tbody tr.clic{cursor:pointer}
   </div>
   <nav class="rail-nav" id="railNav" aria-label="Ir para a seção">
     <button class="active" data-go="prazoCover"><i>⌂</i><span>Página inicial</span></button>
+    <button data-go="secUnidade"><i>UN</i><span>Painel da unidade</span></button>
+    <button data-go="secGestao"><i>G</i><span>Gestão por unidade</span></button>
     <button data-go="secFases"><i>1</i><span>Onde o prazo se perde</span><span class="nav-num" id="navFora">–</span></button>
     <button data-go="secTempo"><i>T</i><span>Tempo por etapa</span></button>
     <button data-go="secVenc"><i>!</i><span>Vencendo agora</span></button>
@@ -1363,13 +1441,22 @@ tbody tr.clic{cursor:pointer}
 </div>
 
 <div class="dashboard-body">
+  <div class="recorte-strip" id="recorteStrip" hidden aria-live="polite">
+    <span class="rs-ico" aria-hidden="true">◎</span>
+    <div class="rs-main">
+      <div class="rs-tt">Recorte aplicado ao painel inteiro</div>
+      <div class="rs-chips" id="recorteChips"></div>
+    </div>
+    <div class="rs-num" id="recorteNum"></div>
+    <button type="button" class="rs-clear" id="btnLimparRecorte">Limpar recorte</button>
+  </div>
   <div class="faixa-dest" id="faixaDest"></div>
 
   <div class="cards" id="cards"></div>
 
   <section id="secUnidade">
     <h2>Painel da unidade <span class="tag" id="tagUnidade">expedição do CTCE e resultado na ponta</span></h2>
-    <p class="lead">Escolha a unidade do gestor. O painel inteiro passa a mostrar somente os objetos que passaram por ela, e o bloco abaixo separa o que o CTCE expediu, o que chegou dentro e fora do prazo e o que aconteceu depois da chegada.</p>
+    <p class="lead">Escolha a unidade do gestor e o período de expedição. <b>Os dois campos valem para o painel inteiro</b>: todos os cartões, o funil, os quadros de perda, os rankings, as tabelas e o relatório são recalculados com o mesmo recorte. O bloco abaixo detalha o que o CTCE expediu, o que chegou dentro e fora do prazo e o que aconteceu depois da chegada.</p>
 
     <div class="uni-foco">
       <label for="focoUnidade">Unidade em foco
@@ -1381,9 +1468,12 @@ tbody tr.clic{cursor:pointer}
       <label for="expAte">até
         <input type="date" id="expAte">
       </label>
-      <button type="button" class="btn btn-report-alt" id="btnExpAplicar">Atualizar</button>
-      <button type="button" class="btn btn-report-alt" id="btnExpTabela">Ver na tabela</button>
-      <button type="button" class="btn btn-report-alt" id="btnExpXlsx">Baixar planilha</button>
+      <div class="uni-foco-acoes">
+        <button type="button" class="btn btn-report-alt" id="btnExpAplicar">Aplicar ao painel</button>
+        <button type="button" class="btn btn-report-alt" id="btnExpTudo">Todo o período</button>
+        <button type="button" class="btn btn-report-alt" id="btnExpTabela">Ver na tabela</button>
+        <button type="button" class="btn btn-report-alt" id="btnExpXlsx">Baixar planilha</button>
+      </div>
       <div class="uni-foco-info" id="focoInfo"></div>
     </div>
 
@@ -1409,6 +1499,62 @@ tbody tr.clic{cursor:pointer}
     </div>
     <div class="nota" id="notaUnidade"></div>
   </section>
+  <section id="secGestao">
+    <h2>Gestão por unidade <span class="tag" id="tagGestao">comparativo · responsabilidade · alertas</span></h2>
+    <p class="lead">Três leituras para reunião de gestão, sempre dentro do recorte aplicado ao painel: quem melhorou e quem piorou entre dois períodos, onde o prazo se perdeu e onde o objeto continua parado, e quais unidades exigem alerta imediato.</p>
+
+    <div class="ges-bloco">
+      <div class="ges-head">
+        <div><h3>1. Comparativo entre unidades</h3><div class="ges-sub">Divide o recorte em dois períodos e compara a taxa de chegada no prazo de cada unidade de destino. Ordenado de quem mais piorou para quem mais melhorou.</div></div>
+        <div class="ges-ctrl">
+          <label>Divisor dos períodos<input type="date" id="cmpDivisor"></label>
+          <button id="btnCmpMetade">Usar a metade do recorte</button>
+        </div>
+      </div>
+      <div class="ges-hint">Em tela estreita, arraste a tabela para o lado para ver todas as colunas.</div>
+      <div class="ges-kpis" id="cmpKpis"></div>
+      <div class="tw ges-tab" style="max-height:430px">
+        <table class="tab-fase" id="tabCmp">
+          <thead><tr><th>Unidade de destino</th><th class="n">Expedidos A</th><th class="n">Expedidos B</th><th class="n">No prazo A</th><th class="n">No prazo B</th><th class="n">Variação</th><th>Situação</th></tr></thead>
+          <tbody id="cmpBody"><tr><td colspan="7">Calculando…</td></tr></tbody>
+        </table>
+      </div>
+      <div class="nota" id="notaCmp"></div>
+    </div>
+
+    <div class="ges-bloco">
+      <h3>2. Responsabilidade operacional</h3>
+      <div class="ges-sub">Cruza o instante em que o prazo venceu (unidade naquele momento) com o ponto em que o objeto está parado hoje, pelo último evento. Responde duas perguntas diferentes: quem deixou vencer e quem ainda está segurando.</div>
+      <div class="ges-kpis" id="respKpis"></div>
+      <div class="ges-resp-grid">
+        <div class="tw ges-tab" style="max-height:400px">
+          <table class="tab-fase" id="tabRespOp">
+            <thead><tr><th>Onde está parado hoje</th><th class="n">Sem baixa</th><th class="n">Vencidos</th><th class="n">Perdeu aqui</th><th class="n">Veio de outra</th><th class="n">Parado (d)</th></tr></thead>
+            <tbody id="respOpBody"><tr><td colspan="6">Calculando…</td></tr></tbody>
+          </table>
+        </div>
+        <div>
+          <p class="ges-fluxo-title">Principais fluxos de perda (venceu em → está em)</p>
+          <div id="respFluxos"></div>
+        </div>
+      </div>
+      <div class="nota">Clique em uma linha para ver os objetos vencidos parados naquela unidade. “Perdeu aqui” = já estava vencido na unidade onde está; “veio de outra” = venceu antes de chegar. Em trânsito aparece separado, pois ainda não há unidade responsável pela guarda.</div>
+    </div>
+
+    <div class="ges-bloco">
+      <div class="ges-head">
+        <div><h3>3. Alertas gerenciais</h3><div class="ges-sub">Unidades que acumulam objetos vencidos e ainda sem baixa. O alerta combina volume absoluto com participação no estoque parado da unidade, para não privilegiar só as maiores.</div></div>
+        <div class="ges-ctrl">
+          <label>Mínimo de vencidos<input type="number" id="alertaMin" value="10" min="1" step="1"></label>
+          <label>% mínima de vencidos<input type="number" id="alertaPct" value="50" min="1" max="100" step="5"></label>
+        </div>
+      </div>
+      <div class="ges-kpis" id="alertaKpis"></div>
+      <div class="ges-alertas" id="gesAlertas"></div>
+      <div class="nota" id="notaAlertas"></div>
+    </div>
+  </section>
+
 
   <section id="secSintese" class="sintese-wrap">
     <div class="sintese-head"><h2>Síntese executiva para a reunião</h2><span class="tag" id="sinteseTag">visão gerencial</span></div>
@@ -1498,6 +1644,7 @@ tbody tr.clic{cursor:pointer}
     <h2>Entregas por dia <span class="tag" id="tagEvo"></span></h2>
     <p class="lead">Data da baixa de entrega. Verde são as entregas dentro do prazo, vermelho as que saíram depois do prazo. Serve para mostrar o efeito do acúmulo: quanto mais atraso entra, mais vermelho aparece nos dias seguintes.</p>
     <div class="legenda-mini"><span><i style="background:#1a9e5c"></i>Entregue no prazo</span><span><i style="background:#c0392b"></i>Entregue fora do prazo</span></div>
+    <div id="evoScope"></div>
     <div class="evo" id="evo"></div>
   </section>
 
@@ -1510,6 +1657,7 @@ tbody tr.clic{cursor:pointer}
         <h2 style="font-size:14px;margin:18px 0 10px">Situação atual <span class="tag" id="tagSit">—</span></h2><div id="listaSituacao"></div><div class="mini" id="notaSit" style="margin-top:8px;line-height:1.45"></div></div>
       <div class="perfil-lado">
         <h2 style="font-size:14px;margin-bottom:10px">Prazo da base</h2>
+        <div id="perfilEscopo"></div>
         <div class="pf-stats" id="perfilStats"></div>
         <h2 style="font-size:14px;margin:18px 0 6px">Há quanto tempo está parado <span class="mini">objetos sem baixa</span></h2>
         <div id="listaParado"></div>
@@ -1652,6 +1800,30 @@ window.__UFDESTINO__={"AE052619341BR":"MA","AE052619369BR":"MA","AE062674245BR":
 @media (max-width:760px){ .uni-tab table{min-width:0} }
 @media (max-width:900px){ .uni-grid{grid-template-columns:1fr 1fr} }
 @media (max-width:560px){ .uni-grid{grid-template-columns:1fr} .uni-foco select,.uni-foco input{min-width:0;width:100%} .uni-foco label{flex:1 1 100%} }
+
+/* ---------- recorte global do painel ---------- */
+.tb-chip-rec{background:#ffc700!important;color:#083a67!important;border-color:#ffe27a!important;font-weight:800!important}
+.topbar .tb-chip.tb-chip-rec b{color:#083a67}
+body.recorte-on section{scroll-margin-top:124px}
+.uni-foco-acoes{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.uni-foco-info{flex:1 1 100%!important;min-width:0!important}
+.recorte-strip{position:sticky;top:0;z-index:24;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:linear-gradient(100deg,#fffdf3,#fff);border:1px solid #e6d6a3;border-left:6px solid var(--amarelo);border-radius:14px;padding:10px 14px;margin:10px 0 12px;box-shadow:0 6px 18px rgba(8,58,103,.08)}
+.recorte-strip[hidden]{display:none}
+.rs-ico{width:30px;height:30px;border-radius:50%;background:#fff3c4;color:#8a6a00;display:grid;place-items:center;font-size:16px;flex:none}
+.rs-main{flex:1 1 320px;min-width:220px}
+.rs-tt{font-size:10.5px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:#8a6a00}
+.rs-chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px}
+.rs-chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #d9c78a;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:600;color:#4b3c00;cursor:pointer;font-family:inherit}
+.rs-chip b{font-weight:800;color:#083a67}
+.rs-chip i{font-style:normal;font-size:14px;line-height:1;color:#b07d00}
+.rs-chip:hover{background:#fff8dc;border-color:#c9a83f}
+.rs-num{font-size:11.5px;color:#5a7086;text-align:right;line-height:1.35}
+.rs-num b{font-size:17px;color:#083a67}
+.rs-clear{border:1px solid #c9a83f;background:#fff7d6;color:#6b5200;font-family:inherit;font-weight:800;font-size:11.5px;letter-spacing:.3px;border-radius:999px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.rs-clear:hover{background:#ffeeb0}
+.recorte-flash{animation:recFlash .9s ease}
+@keyframes recFlash{0%{box-shadow:0 0 0 0 rgba(255,199,0,.55)}100%{box-shadow:0 0 0 14px rgba(255,199,0,0)}}
+@media (max-width:760px){ .recorte-strip{position:static;gap:7px;padding:9px 11px} .rs-ico{display:none} .rs-main{flex:1 1 100%} .rs-num{text-align:left;width:100%;font-size:11px} .rs-num b{font-size:14px} .rs-clear{width:auto;margin-left:auto;padding:6px 10px} .rs-chip{font-size:11px;padding:4px 8px} }
 </style>
 
 <script src="dados.js"></script>
@@ -1830,6 +2002,7 @@ function estaBaseLimpa(){
 
 const F={status:'',etapa:'',cat:'',uni:'',busca:'',de:'',ate:'',sit:'',uniPerda:'',uniAgora:'',prazo:'',dev:'',abrang:'',expOnly:false};
 let FOCO='';
+let PER_PADRAO;   /* cache do primeiro/ultimo dia de expedicao da base */
 let TABONLY=null; /* filtro so da tabela: nao mexe nos quadros */
 const DEV_LABEL={unidade:'NA UNIDADE',ctce:'NO CTCE',remetente:'REMETENTE'};
 const DEV_NOME={unidade:'Na unidade de destino',ctce:'No CTCE, para devolver',remetente:'Seguiu ao remetente'};
@@ -2119,6 +2292,7 @@ function montarObjetos(){
   });
   OBJ.sort((a,b)=>a.obj.localeCompare(b.obj));
   AUD.objetos=OBJ.length;
+  PER_PADRAO=undefined;
   window.OBJ=OBJ;
 }
 
@@ -2167,7 +2341,9 @@ function filtroAtivo(){
   if(F.tipoUni) p.push('tipo de unidade: '+F.tipoUni);
   if(F.dev) p.push('devolução: '+(DEV_NOME[F.dev]||F.dev));
   if(F.abrang) p.push('abrangência: '+F.abrang);
-  if(FOCO) p.push('unidade '+FOCO);
+  const rec=recorteExpedicao();
+  if(rec.uni) p.push('unidade em foco: '+rec.uni);
+  if(rec.periodo) p.push('expedição de '+dbr(rec.de)+' a '+dbr(rec.ate));
   if(F.expOnly) p.push('expedição do CTCE'+(FOCO?(' para '+FOCO):''));
   if(OBJF) p.push('objeto '+OBJF);
   return p.join(' · ');
@@ -2177,11 +2353,12 @@ function aplicarInterno(){
   const q=semAcento(F.busca).toUpperCase().trim();
   const de=F.de?ts(F.de.split('-').reverse().join('/')+' 00:00'):0;
   const ate=F.ate?ts(F.ate.split('-').reverse().join('/')+' 23:59'):0;
+  const rec=recorteExpedicao();
   const passa=(o,panorama,semDev)=>{
     if(F.abrang && o.abrang!==F.abrang) return false;
     if(OBJF && o.obj!==OBJF) return false;
     if(!semDev && F.dev && o.dev!==F.dev) return false;
-    if(FOCO && !(o.expDst===FOCO || o.evs.some(e=>e.uni===FOCO))) return false;
+    if(rec.ativo && !objNoRecorte(o,rec)) return false;
     if(F.expOnly && !COHORT_IDS.has(o.obj)) return false;
     if(!panorama && F.uniPerda && !(o.late && o.phu===F.uniPerda)) return false;
     if(F.uniAgora && o.uni!==F.uniAgora) return false;
@@ -2252,12 +2429,15 @@ function porFase(arr){
 }
 function renderCards(arr){
   const R=resumo(arr), Fs=porFase(arr);
+  const rec=recorteExpedicao();
+  const recAtivo=rec.ativo;
   // Os dois novos cartões usam o mesmo universo do gráfico de devolução,
   // respeitando os filtros gerais, mas sem se anularem pelo próprio filtro de devolução.
   const devCards=(typeof VIEWDEV!=='undefined'?VIEWDEV:arr).filter(o=>o.dev);
   const devNaUnidade=devCards.filter(o=>o.dev==='unidade').length;
   const devNoCTCE=devCards.filter(o=>o.dev==='ctce').length;
   const totalDevCards=devCards.length;
+  const notaDev=F.dev?' · não aplica o filtro de devolução':'';
   const lateA=Fs.A.length, lateB=Fs.B.length, lateC=Fs.C.length, lateD=Fs.D.length;
   const totLate=R.late||1;
   const catTxt=Object.keys(R.cat).map(k=>k+' '+nf(R.cat[k])).join(' · ');
@@ -2277,8 +2457,8 @@ function renderCards(arr){
     .map(([nome,n])=>({nome,n}))
     .sort((a,b)=>b.n-a.n || a.nome.localeCompare(b.nome))[0]||null;
   const cards=[
-    {id:'c_obj', cls:'', lbl:'Objetos na base', val:nf(R.obj), obs:catTxt||'—'},
-    {id:'c_ev', cls:'', lbl:'Eventos no histórico', val:nf(R.ev), obs:'uma linha por evento, sem excluir repetidos'},
+    {id:'c_obj', cls:'', lbl:(recAtivo?'Objetos no recorte':'Objetos na base'), val:nf(R.obj), obs:(recAtivo?('de '+nf(OBJ.length)+' na base · '):'')+(catTxt||'—')},
+    {id:'c_ev', cls:'', lbl:(recAtivo?'Eventos no recorte':'Eventos no histórico'), val:nf(R.ev), obs:(recAtivo?('de '+nf(AUD.eventos)+' eventos na base · '):'')+'uma linha por evento, sem excluir repetidos'},
     {id:'c_med', cls:'', lbl:'Eventos por objeto', val:d1(R.obj?R.ev/R.obj:0), obs:'mediana '+nf(mediana(arr.map(o=>o.n))||0)+' por objeto'},
     {id:'c_fora', cls:'pend', lbl:'Perderam o prazo', val:nf(R.late), obs:pc(R.late,R.obj)+' da base · histórico, inclusive baixas concluídas'},
     {id:'c_ent', cls:'', lbl:'Com entrega registrada', val:nf(R.ent), obs:pc(R.ent,R.obj)+' da base'},
@@ -2294,9 +2474,9 @@ function renderCards(arr){
     {id:'c_d', cls:'destaque', lbl:'Etapa 4 · na unidade', val:horas(cD), obs:'mediana até a baixa'},
     {id:'c_atr', cls:'pend', lbl:'Atraso médio', val:(atrMed!=null?d1(atrMed)+' d':'—'), obs:'mediana de '+d1(atrM)+' dia entre os '+nf(R.late)+' atrasados'},
     {id:'c_fase', cls:'pend', lbl:'Etapa que mais perde', val:etapaTopPerda?etapaTopPerda.nome:'—', obs:etapaTopPerda?nf(etapaTopPerda.n)+' objetos ('+pc(etapaTopPerda.n,R.late)+') · mesma classificação do gráfico de perdas':'sem perda identificada por etapa'},
-    {id:'c_uni', cls:'destaque', lbl:'Unidade com mais vencidos em aberto', val:uniTop?uniTop.nome:'—', obs:uniTop?nf(uniTop.n)+' objetos ainda sem baixa final':'—'},
-    {id:'c_dev_unidade', cls:'', lbl:'Na unidade de destino', val:nf(devNaUnidade), obs:pc(devNaUnidade,totalDevCards)+' dos objetos com falha de entrega · ainda sob responsabilidade da unidade'},
-    {id:'c_dev_ctce', cls:'pend', lbl:'No CTCE para devolução', val:nf(devNoCTCE), obs:pc(devNoCTCE,totalDevCards)+' dos objetos com falha de entrega · aguardando encaminhamento ao remetente'}
+    {id:'c_uni', cls:'destaque', lbl:'Onde mais venceu (em aberto)', val:uniTop?uniTop.nome:'—', obs:uniTop?nf(uniTop.n)+' objetos ainda sem baixa final':'—'},
+    {id:'c_dev_unidade', cls:'', lbl:'Na unidade de destino', val:nf(devNaUnidade), obs:pc(devNaUnidade,totalDevCards)+' dos objetos com falha de entrega · ainda sob responsabilidade da unidade'+notaDev},
+    {id:'c_dev_ctce', cls:'pend', lbl:'No CTCE para devolução', val:nf(devNoCTCE), obs:pc(devNoCTCE,totalDevCards)+' dos objetos com falha de entrega · aguardando encaminhamento ao remetente'+notaDev}
   ];
   $('cards').innerHTML=cards.map(c=>
     '<div class="card clicavel '+c.cls+'" id="'+c.id+'" title="Clique para filtrar">'+
@@ -2311,8 +2491,8 @@ function renderCards(arr){
   $('faixaDest').innerHTML=faixa.map(f=>
     '<div class="dest '+f.cls+'"><h5>'+esc(f.h)+'</h5><div class="big">'+esc(f.big)+'</div><div class="sub">'+esc(f.sub)+'</div></div>').join('');
 
-  $('chipBase').textContent='Base: '+nf(AUD.eventos)+' eventos';
-  $('chipObj').textContent='Objetos: '+nf(R.obj);
+  $('chipBase').textContent=(recAtivo?('Recorte: '+nf(R.ev)+' de '+nf(AUD.eventos)+' eventos'):('Base: '+nf(AUD.eventos)+' eventos'));
+  $('chipObj').textContent='Objetos: '+nf(R.obj)+(recAtivo?(' de '+nf(OBJ.length)):'');
   $('chipPrazo').innerHTML='Fora do prazo: <b>'+nf(R.late)+'</b>';
   $('navFora').textContent=nf(R.late);
   $('tagFases').textContent=nf(R.late)+' objetos fora do prazo';
@@ -2552,9 +2732,21 @@ function renderResp(arr){
 /* ============================================================
    ENTREGAS POR DIA
    ============================================================ */
+let EVO_MODO='auto';
 function renderEvo(arr){
+  const todas=arr.filter(o=>o.ent);
+  if(!FOCO) EVO_MODO='auto';
+  const daUni=FOCO? todas.filter(o=>uniEq(o.uni,FOCO)) : todas;
+  const modo = !FOCO? 'pass' : (EVO_MODO==='auto'? (daUni.length? 'uni':'pass') : EVO_MODO);
+  const base = modo==='uni'? daUni : todas;
+  if($('evoScope')){
+    $('evoScope').innerHTML = FOCO? '<div class="scope-bar"><span class="sb-lbl">Ver:</span>'+
+      '<button type="button" class="sb'+(modo==='uni'?' on':'')+'" data-evo="uni">Entregas feitas pela unidade<b>'+nf(daUni.length)+'</b></button>'+
+      '<button type="button" class="sb'+(modo==='pass'?' on':'')+'" data-evo="pass">Objetos que passaram por ela<b>'+nf(todas.length)+'</b></button>'+
+      '<span class="sb-note">'+(modo==='uni'? 'Somente baixas registradas na unidade em foco.':'Inclui entregas feitas por outras unidades após a transferência.')+'</span></div>' : '';
+  }
   const m=new Map();
-  for(const o of arr){ if(!o.ent) continue;
+  for(const o of base){
     const d=new Date(o.fimT||o.last); const k=d.getUTCFullYear()+'-'+p2(d.getUTCMonth()+1)+'-'+p2(d.getUTCDate());
     let x=m.get(k); if(!x){x={ok:0,fo:0};m.set(k,x);}
     if(o.late) x.fo++; else x.ok++;
@@ -2562,7 +2754,7 @@ function renderEvo(arr){
   const dias=Array.from(m.keys()).sort();
   if(!dias.length){ $('evo').innerHTML='<div class="mini" style="padding:20px">Sem entregas na seleção atual.</div>'; $('tagEvo').textContent='—'; return; }
   const max=Math.max(1,...dias.map(k=>m.get(k).ok+m.get(k).fo));
-  $('tagEvo').textContent=nf(dias.length)+' dias com baixa';
+  $('tagEvo').textContent=nf(base.length)+' entregas · '+nf(dias.length)+' dias · '+(modo==='uni'?'feitas pela unidade':'objetos que passaram');
   $('evo').innerHTML=dias.map(k=>{
     const v=m.get(k), h=v.ok/max*100, f=v.fo/max*100, tot=v.ok+v.fo;
     const barra=(cls,pct,val)=>'<div class="bw"><span class="n'+(cls==='fo'?' r':'')+'">'+val+'</span>'+
@@ -2621,10 +2813,22 @@ function renderPerfilLado(arr){
   if(!$('perfilStats')) return;
   const R=resumo(arr);
   const noPrazo=R.ok, semBaixa=R.pend;
+  let escopo='', aquiUni=null;
+  if(FOCO){
+    const ent=arr.filter(o=>o.ent), entUni=ent.filter(o=>uniEq(o.uni,FOCO));
+    const ab=arr.filter(o=>!o.fim), grupos={}; aquiUni=0;
+    ab.forEach(o=>{ const r=respDe(o); const k=r.enc?'Em trânsito':(r.u||'Sem unidade'); grupos[k]=(grupos[k]||0)+1; if(!r.enc&&uniEq(r.u,FOCO)) aquiUni++; });
+    const top=Object.entries(grupos).sort((a,b)=>b[1]-a[1]).slice(0,3);
+    escopo='<div class="esc"><div class="esc-t">O recorte é “passou pela unidade”, não “está na unidade”</div>'+
+      '<div class="esc-l"><span><b>'+nf(ent.length)+'</b> entregues</span><span><b>'+nf(entUni.length)+'</b> pela unidade</span><span><b>'+nf(ent.length-entUni.length)+'</b> por outras</span></div>'+
+      '<div class="esc-l"><span><b>'+nf(ab.length)+'</b> sem baixa</span><span><b>'+nf(aquiUni)+'</b> ainda na unidade</span><span><b>'+nf(ab.length-aquiUni)+'</b> fora da unidade</span></div>'+
+      (top.length?'<div class="esc-mini">Sem baixa hoje: '+top.map(([k,v])=>esc(k)+' ('+nf(v)+')').join(' · ')+'</div>':'')+'</div>';
+  }
+  if($('perfilEscopo')) $('perfilEscopo').innerHTML=escopo;
   $('perfilStats').innerHTML=[
-    {cls:'fora',lbl:'Fora do prazo',val:nf(R.late),obs:pc(R.late,arr.length)+' da base'},
+    {cls:'fora',lbl:'Fora do prazo',val:nf(R.late),obs:pc(R.late,arr.length)+(FOCO?' do recorte':' da base')},
     {cls:'ok',lbl:'Entregue no prazo',val:nf(noPrazo),obs:pc(noPrazo,R.ent||1)+' das entregas'},
-    {cls:'',lbl:'Sem baixa final',val:nf(semBaixa),obs:pc(semBaixa,arr.length)+' ainda em curso'},
+    {cls:'',lbl:'Sem baixa final',val:nf(semBaixa),obs:pc(semBaixa,arr.length)+' do recorte'+(aquiUni!=null? ' · '+aquiUni+' ainda na unidade':'')},
     {cls:'ret',lbl:'Aguardando retirada',val:nf(R.ret),obs:'já na unidade de entrega'}
   ].map(x=>'<div class="pf-stat '+x.cls+'"><div class="lbl">'+x.lbl+'</div><div class="val">'+x.val+'</div><div class="obs">'+x.obs+'</div></div>').join('');
 
@@ -2692,8 +2896,10 @@ function renderTabela(){
   let arr = MODO==='obj'? VIEW : VIEWEV;
   if(MODO==='obj' && TABONLY){
     if(TABONLY.tipo==='exp') arr=arr.filter(o=>COHORT_IDS.has(o.obj));
-    else if(TABONLY.tipo==='perda') arr=arr.filter(o=>o.late && o.phu===TABONLY.uni);
-    else if(TABONLY.tipo==='resp') arr=arr.filter(o=>{const r=respDe(o); return !o.fim && r.u===TABONLY.uni && !r.enc;});
+    else if(TABONLY.tipo==='perda') arr=arr.filter(o=>o.late && uniEq(o.phu,TABONLY.uni));
+    else if(TABONLY.tipo==='resp') arr=arr.filter(o=>{const r=respDe(o); return !o.fim && uniEq(r.u,TABONLY.uni) && !r.enc;});
+    else if(TABONLY.tipo==='atraso') arr=arr.filter(o=>{const r=respDe(o); return !o.fim && o.late && uniEq(r.u,TABONLY.uni) && !r.enc;});
+    else if(TABONLY.tipo==='cmp') arr=arr.filter(o=>(o.exps||[]).some(e=>uniEq(e.to,TABONLY.uni)));
   }
   const total=arr.length;
   const paginas=Math.max(1,Math.ceil(total/PORPAG));
@@ -2736,7 +2942,7 @@ function renderTabela(){
   $('pagerInfo').textContent = total? ('Mostrando '+(ini+1)+'–'+Math.min(ini+PORPAG,total)+' de '+nf(total)+' '+(MODO==='obj'?'objetos':'eventos')) : '0 registros';
   $('pgPrev').disabled = pagina<=1;
   $('pgNext').disabled = pagina>=paginas;
-  $('tagTotal').textContent = (MODO==='obj'? nf(arr.length)+' objetos' : nf(VIEWEV.length)+' eventos') + (MODO==='obj'&&TABONLY? ' · '+(TABONLY.tipo==='exp'?('expedição do CTCE'+(FOCO?' para '+FOCO:'')):(TABONLY.tipo==='resp'?('sem baixa parado em '+TABONLY.uni):('perdeu o prazo em '+TABONLY.uni))) : '');
+  $('tagTotal').textContent = (MODO==='obj'? nf(arr.length)+' objetos' : nf(VIEWEV.length)+' eventos') + (MODO==='obj'&&TABONLY? ' · '+(TABONLY.tipo==='exp'?('expedição do CTCE'+(FOCO?' para '+FOCO:'')):(TABONLY.tipo==='resp'?('sem baixa parado em '+TABONLY.uni):(TABONLY.tipo==='atraso'?('vencido e parado em '+TABONLY.uni):(TABONLY.tipo==='cmp'?('expedido para '+TABONLY.uni):('perdeu o prazo em '+TABONLY.uni))))) : '');
   $('objChip').className='objchip'+(OBJF?' on':'');
   if(OBJF) $('objChipTxt').textContent='Objeto '+OBJF;
 }
@@ -2845,13 +3051,319 @@ function atualizarRelatorio(){ if($('textoRelatorio')) $('textoRelatorio').value
 /* ============================================================
    RENDER GERAL
    ============================================================ */
+function filtrosLateraisAtivos(){
+  const l=[];
+  if(F.status) l.push((($('fStatus')||{}).selectedOptions&&$('fStatus').selectedOptions[0]?$('fStatus').selectedOptions[0].text:F.status));
+  if(F.prazo) l.push(F.prazo==='hoje'?'vence hoje':(F.prazo==='amanha'?'vence amanhã':'vencido sem baixa'));
+  if(F.etapa) l.push('etapa '+F.etapa);
+  if(F.proc) l.push('etapa do processo: '+F.proc);
+  if(F.tipoUni) l.push('tipo de unidade: '+F.tipoUni);
+  if(F.dev) l.push('devolução: '+(DEV_NOME[F.dev]||F.dev));
+  if(F.abrang) l.push('abrangência: '+F.abrang);
+  if(F.cat) l.push(F.cat);
+  if(F.uni) l.push('passou em '+F.uni);
+  if(F.uniPerda) l.push('perdeu o prazo em '+F.uniPerda);
+  if(F.uniAgora) l.push('parado em '+F.uniAgora);
+  if(F.busca) l.push('busca: '+F.busca);
+  if(F.de) l.push('postagem de '+F.de.split('-').reverse().join('/'));
+  if(F.ate) l.push('postagem até '+F.ate.split('-').reverse().join('/'));
+  if(F.sit) l.push('situação: '+F.sit);
+  if(OBJF) l.push('objeto '+OBJF);
+  return l;
+}
+function limparFiltrosLaterais(manter){
+  const keep=manter||{};
+  TABONLY=null; OBJF='';
+  if(!keep.busca) F.busca='';
+  if(!keep.de) F.de='';
+  if(!keep.ate) F.ate='';
+  if(!keep.status) F.status='';
+  if(!keep.etapa) F.etapa='';
+  if(!keep.cat) F.cat='';
+  if(!keep.sit) F.sit='';
+  if(!keep.uni) F.uni='';
+  F.uniPerda=''; F.uniAgora=''; F.prazo=''; F.proc=''; F.tipoUni=''; F.dev=''; F.abrang=''; F.expOnly=false;
+  document.querySelectorAll('#prazoChips .pchip').forEach(b=>b.classList.remove('on'));
+  const pares=[['fBusca','busca'],['fDe','de'],['fAte','ate'],['fStatus','status'],['fEtapa','etapa'],['fCategoria','cat'],['fSituacao','sit'],['fUnidade','uni'],['fProc','proc'],['fTipoUni','tipoUni'],['fDev','dev'],['fAbrang','abrang']];
+  pares.forEach(function(par){ if(keep[par[1]]) return; const e=$(par[0]); if(e) e.value=''; });
+}
+function recorteVazioMsg(){
+  const r=recorteExpedicao();
+  if(!r.uni && !r.periodo) return 'Nenhum objeto atende aos filtros atuais.';
+  let m='Nenhuma expedição';
+  if(r.uni) m+=' para a unidade '+r.uni;
+  if(r.periodo) m+=' no período de '+dbr(r.de)+' a '+dbr(r.ate);
+  return m+'. Amplie o período, escolha outra unidade ou clique em "Limpar recorte".';
+}
+function renderRecorte(){
+  const strip=$('recorteStrip'); if(!strip) return;
+  const rec=recorteExpedicao();
+  const laterais=filtrosLateraisAtivos();
+  const ativo=rec.ativo||laterais.length>0;
+  strip.hidden=!ativo;
+  const chip=$('chipRecorte');
+  document.body.classList.toggle('recorte-on',ativo);
+  if($('tagUnidade')) $('tagUnidade').textContent=(rec.uni?rec.uni+' · ':'')+(rec.periodo?('expedição '+dbr2(rec.de)+' a '+dbr2(rec.ate)):'toda a base');
+  if(!ativo){ if(chip) chip.hidden=true; return; }
+  const R=resumo(VIEW);
+  const chips=[];
+  if(rec.uni) chips.push('<button type="button" class="rs-chip rs-uni" data-rs="uni" title="Remover a unidade em foco">Unidade em foco: <b>'+esc(rec.uni)+'</b><i>×</i></button>');
+  if(rec.periodo) chips.push('<button type="button" class="rs-chip rs-dt" data-rs="periodo" title="Voltar ao período completo da base">Expedição: <b>'+dbr(rec.de)+' a '+dbr(rec.ate)+'</b><i>×</i></button>');
+  if(laterais.length) chips.push('<button type="button" class="rs-chip rs-fl" data-rs="filtros" title="'+esc(laterais.join(' · '))+'"'+'>Filtros laterais: <b>'+laterais.length+'</b><i>×</i></button>');
+  $('recorteChips').innerHTML=chips.join('');
+  $('recorteNum').innerHTML='<b>'+nf(R.obj)+'</b> de '+nf(OBJ.length)+' objetos<br><span>'+nf(R.ev)+' de '+nf(AUD.eventos)+' eventos</span>';
+  document.body.classList.toggle('recorte-on',true);
+  if(chip){
+    const nome=rec.uni||(rec.periodo?('expedição '+dbr2(rec.de)+'–'+dbr2(rec.ate)):'filtros laterais');
+    chip.hidden=false; chip.innerHTML='Recorte: <b>'+esc(nome)+'</b>';
+  }
+}
+function animarRecorte(){
+  const cards=$('cards'); if(!cards) return;
+  cards.classList.remove('recorte-flash');
+  void cards.offsetWidth;
+  cards.classList.add('recorte-flash');
+}
+function initRecorte(){
+  const strip=$('recorteStrip'); if(!strip) return;
+  strip.addEventListener('click',e=>{
+    const b=e.target.closest('[data-rs]'); if(!b) return;
+    const tipo=b.getAttribute('data-rs');
+    if(tipo==='uni'){
+      FOCO=''; const s=$('focoUnidade'); if(s) s.value=''; aplicar(); animarRecorte();
+    } else if(tipo==='periodo'){
+      const d=$('expDe'), a=$('expAte'); if(d) d.value=''; if(a) a.value=''; preencherPeriodo(); aplicar(); animarRecorte();
+    } else if(tipo==='filtros'){
+      limparFiltrosLaterais(); aplicar(); animarRecorte();
+    }
+  });
+  const cl=$('btnLimparRecorte');
+  if(cl) cl.addEventListener('click',()=>{
+    FOCO=''; const s=$('focoUnidade'); if(s) s.value='';
+    const d=$('expDe'), a=$('expAte'); if(d) d.value=''; if(a) a.value=''; preencherPeriodo();
+    limparFiltrosLaterais(); aplicar(); animarRecorte();
+  });
+}
+
+/* ============ GESTAO POR UNIDADE: comparativo, responsabilidade e alertas ============ */
+function gEsc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+function gPct(a,b){ return b? (a/b*100) : null; }
+function gNum(v,casas){ return v==null? '–' : v.toLocaleString('pt-BR',{minimumFractionDigits:casas||0,maximumFractionDigits:casas||0}); }
+function gData(tsv){ const d=new Date(tsv); return String(d.getUTCDate()).padStart(2,'0')+'/'+String(d.getUTCMonth()+1).padStart(2,'0'); }
+
+function cmpJanela(){
+  const rec=recorteExpedicao(), pd=periodoPadrao();
+  const de=rec.periodo?rec.de:pd.mn, ate=rec.periodo?rec.ate:pd.mx;
+  const inp=$('cmpDivisor');
+  let div=0;
+  if(inp && inp.value){ const p=inp.value.split('-'); if(p.length===3) div=ts(p[2]+'/'+p[1]+'/'+p[0]+' 12:00'); }
+  if(!div || (de && div<=de) || (ate && div>=ate)){ div=Math.round((de+ate)/2); if(inp) inp.value=dataInput(div); }
+  return {de:de,ate:ate,div:div};
+}
+
+function renderComparativo(){
+  const body=$('cmpBody'); if(!body) return;
+  const w=cmpJanela(), rec=recorteExpedicao();
+  const mapa=new Map();
+  for(const o of VIEW){
+    const vistos=new Set();
+    for(const e of (o.exps||[])){
+      if(!e.t || !e.to) continue;
+      if(rec.periodo && (e.t<rec.de || e.t>rec.ate)) continue;
+      const g = e.t<=w.div? 'A':'B';
+      const k = uniKey(e.to);
+      if(vistos.has(g+'|'+k)) continue; vistos.add(g+'|'+k);
+      let d=mapa.get(k); if(!d){ d={nome:e.to,A:{n:0,ok:0,sem:0,atr:[]},B:{n:0,ok:0,sem:0,atr:[]}}; mapa.set(k,d); }
+      const x=d[g]; x.n++;
+      if(!e.arr){ x.sem++; continue; }
+      if(o.dmeE && e.arr<=o.dmeE) x.ok++;
+      else if(o.dmeE) x.atr.push((e.arr-o.dmeE)/86400000);
+      else x.ok++;
+    }
+  }
+  let rows=[...mapa.values()].map(function(d){
+    const pa=gPct(d.A.ok,d.A.n), pb=gPct(d.B.ok,d.B.n);
+    d.pa=pa; d.pb=pb; d.delta=(pa!=null&&pb!=null)? pb-pa : null;
+    d.medA=mediana(d.A.atr); d.medB=mediana(d.B.atr);
+    return d;
+  });
+  let minimo=2;
+  let validas = rows.filter(r=>r.A.n>=2 && r.B.n>=2 && r.delta!=null);
+  if(!validas.length){ minimo=1; validas = rows.filter(r=>r.A.n>=1 && r.B.n>=1 && r.delta!=null); }
+  validas.sort((a,b)=>a.delta-b.delta);
+  const conf=validas.filter(r=>r.A.n>=3&&r.B.n>=3);
+  const melhor=conf.filter(r=>r.delta>=5).length, pior=conf.filter(r=>r.delta<=-5).length;
+
+  $('cmpKpis').innerHTML =
+    '<div class="ges-kpi"><small>Unidades comparadas</small><b>'+nf(validas.length)+'</b><span>'+nf(conf.length)+' com 3+ em cada período</span></div>'+
+    '<div class="ges-kpi bom"><small>Melhoraram</small><b>'+nf(melhor)+'</b><span>Só unidades com base confiável</span></div>'+
+    '<div class="ges-kpi ruim"><small>Pioraram</small><b>'+nf(pior)+'</b><span>Só unidades com base confiável</span></div>'+
+    '<div class="ges-kpi neutro"><small>Estáveis</small><b>'+nf(conf.length-melhor-pior)+'</b><span>Variação entre -5 e +5 pp</span></div>';
+
+  if(!validas.length){
+    body.innerHTML='<tr><td colspan="7"><div class="ges-vazio">Sem volume suficiente nos dois períodos para comparar. Ajuste o divisor ou amplie o recorte.</div></td></tr>';
+    $('notaCmp').innerHTML='';
+    return;
+  }
+  body.innerHTML = validas.slice(0,14).map(function(r){
+    const ok = r.A.n>=3 && r.B.n>=3;
+    const cls = !ok? 'est' : (r.delta>=5? 'melhor' : (r.delta<=-5? 'pior':'est'));
+    const rot = !ok? 'Amostra fraca' : (r.delta>=5? 'Melhorou' : (r.delta<=-5? 'Piorou':'Estável'));
+    const cor = !ok? '#8a97a4' : (r.delta>=5? '#137a45' : (r.delta<=-5? '#a32d20':'#5a7086'));
+    const sinal = ok? ((r.delta>0?'+':'')+gNum(r.delta,1)+' pp') : '–';
+    const fraca = '';
+    return '<tr data-cmp="'+gEsc(r.nome)+'"><td><b>'+gEsc(r.nome)+'</b>'+fraca+'</td>'+
+      '<td class="n">'+nf(r.A.n)+'</td><td class="n">'+nf(r.B.n)+'</td>'+
+      '<td class="n">'+(r.pa==null?'–':gNum(r.pa,1)+'%')+'</td>'+
+      '<td class="n">'+(r.pb==null?'–':gNum(r.pb,1)+'%')+'</td>'+
+      '<td class="n" style="color:'+cor+';font-weight:800">'+sinal+'</td>'+
+      '<td><span class="ges-badge '+cls+'">'+rot+'</span></td></tr>';
+  }).join('');
+
+  const deA=w.de, ateA=w.div, deB=w.div, ateB=w.ate;
+  $('notaCmp').innerHTML='Período A: '+gData(deA)+' a '+gData(ateA)+' · Período B: '+gData(deB)+' a '+gData(ateB)+'. '
+    +'A taxa considera todos os objetos expedidos para a unidade, inclusive os que ainda não têm chegada registrada (contam como fora do prazo). '
+    +'Unidades com menos de '+minimo+' expedições em um dos períodos ficam fora da tabela. A variação e os selos Melhorou/Piorou só aparecem com 3 ou mais expedições em cada período; abaixo disso a linha fica como “amostra fraca”.'+
+    (minimo===1? ' <b>Atenção:</b> a base atual tem poucas expedições no segundo período, então a comparação serve como ilustração — confira com a base completa antes de cobrar resultado.':'');
+}
+
+function renderRespOp(){
+  const body=$('respOpBody'); if(!body) return;
+  const mapa=new Map(), fluxos=new Map();
+  let perdas=0, abertos=0, vencidos=0, cruzado=0;
+  for(const o of VIEW){
+    if(o.late) perdas++;
+    if(o.fim) continue;
+    abertos++;
+    const r=respDe(o);
+    const k=r.enc? 'EM TRÂNSITO' : (r.u||'SEM UNIDADE');
+    let d=mapa.get(k); if(!d){ d={u:k,n:0,venc:0,aqui:0,veio:0,dias:[]}; mapa.set(k,d); }
+    d.n++;
+    if(o.last) d.dias.push(Math.max(0,(zeroHoje()-o.last)/86400000));
+    if(!o.late) continue;
+    vencidos++; d.venc++;
+    if(uniEq(o.phu,k)) d.aqui++; else d.veio++;
+    if(!r.enc && !uniEq(o.phu,k)){
+      cruzado++;
+      if(o.phu){ const fk=o.phu+' → '+k; fluxos.set(fk,(fluxos.get(fk)||0)+1); }
+    }
+  }
+  $('respKpis').innerHTML=
+    '<div class="ges-kpi"><small>Perdas acumuladas</small><b>'+nf(perdas)+'</b><span>Objetos fora do prazo no recorte</span></div>'+
+    '<div class="ges-kpi neutro"><small>Ainda sem baixa</small><b>'+nf(abertos)+'</b><span>Estoque aberto no recorte</span></div>'+
+    '<div class="ges-kpi ruim"><small>Vencidos e parados</small><b>'+nf(vencidos)+'</b><span>'+gNum(gPct(vencidos,abertos),1)+'% do estoque aberto</span></div>'+
+    '<div class="ges-kpi"><small>Venceu em outra unidade</small><b>'+nf(cruzado)+'</b><span>Perdeu antes de chegar onde está</span></div>';
+
+  const rows=[...mapa.values()].sort((a,b)=>b.venc-a.venc || b.n-a.n);
+  if(!rows.length){
+    body.innerHTML='<tr><td colspan="6"><div class="ges-vazio">Nenhum objeto sem baixa no recorte atual.</div></td></tr>';
+  } else {
+    body.innerHTML = rows.slice(0,14).map(function(r){
+      const med=mediana(r.dias);
+      const clicavel = r.u!=='EM TRÂNSITO';
+      return '<tr '+(clicavel?'data-resp-op="'+gEsc(r.u)+'"':'')+'><td><b>'+gEsc(r.u)+'</b></td>'+
+        '<td class="n">'+nf(r.n)+'</td><td class="n" style="color:#a32d20;font-weight:800">'+nf(r.venc)+'</td>'+
+        '<td class="n">'+nf(r.aqui)+'</td><td class="n">'+nf(r.veio)+'</td>'+
+        '<td class="n">'+(med==null?'–':gNum(med,1))+'</td></tr>';
+    }).join('');
+  }
+
+  const top=[...fluxos.entries()].sort((a,b)=>b[1]-a[1]).slice(0,7);
+  $('respFluxos').innerHTML = top.length? top.map(function(f){
+    return '<div class="ges-fluxo" data-fluxo="'+gEsc(f[0].split(' → ')[0])+'"><span class="fx">'+gEsc(f[0].split(' → ')[0])+' → <b>'+gEsc(f[0].split(' → ')[1])+'</b></span><span class="fn">'+nf(f[1])+'</span></div>';
+  }).join('') : '<div class="ges-vazio">Nenhum fluxo entre unidades no recorte.</div>';
+}
+
+function renderAlertas(){
+  const box=$('gesAlertas'); if(!box) return;
+  const min=Math.max(1, parseInt(($('alertaMin')||{}).value,10)||10);
+  const pctMin=Math.min(100, Math.max(1, parseInt(($('alertaPct')||{}).value,10)||50));
+  const mapa=new Map();
+  for(const o of VIEW){
+    if(o.fim) continue;
+    const r=respDe(o); if(r.enc) continue;
+    const k=r.u||'SEM UNIDADE';
+    let d=mapa.get(k); if(!d){ d={u:k,n:0,venc:0,dias:[],max:0}; mapa.set(k,d); }
+    d.n++;
+    if(!o.late) continue;
+    d.venc++;
+    const dd=o.dmeE? Math.max(0,(zeroHoje()-o.dmeE)/86400000):0;
+    d.dias.push(dd); if(dd>d.max) d.max=dd;
+  }
+  let rows=[...mapa.values()].filter(function(d){ return d.venc>=min && (d.venc/d.n*100)>=pctMin; });
+  rows.sort((a,b)=>b.venc-a.venc);
+  const totalVenc=rows.reduce((s,d)=>s+d.venc,0);
+  $('alertaKpis').innerHTML=
+    '<div class="ges-kpi ruim"><small>Unidades em alerta</small><b>'+nf(rows.length)+'</b><span>Com '+min+'+ vencidos e '+pctMin+'%+ do estoque</span></div>'+
+    '<div class="ges-kpi"><small>Objetos nas unidades em alerta</small><b>'+nf(totalVenc)+'</b><span>Vencidos e sem baixa</span></div>'+
+    '<div class="ges-kpi neutro"><small>Maior concentração</small><b>'+(rows.length? nf(rows[0].venc):'0')+'</b><span>'+(rows.length? gEsc(rows[0].u):'Sem unidade em alerta')+'</span></div>';
+
+  if(!rows.length){
+    box.innerHTML='<div class="ges-vazio">Nenhuma unidade atinge os dois critérios ao mesmo tempo. Reduza o mínimo de vencidos ou o percentual para ver situações de atenção.</div>';
+  } else {
+    box.innerHTML=rows.slice(0,9).map(function(d){
+      const pct=d.venc/d.n*100, med=mediana(d.dias);
+      const crit = d.venc>=min*2 || pct>=80 || d.max>=15;
+      return '<div class="ges-alerta'+(crit?' crit':'')+'"><div class="at">'+(crit?'Crítico':'Atenção')+'</div>'+
+        '<h4>'+gEsc(d.u)+'</h4><div class="an">'+nf(d.venc)+'<span>vencidos</span></div>'+
+        '<div class="am">'+gNum(pct,1)+'% dos '+nf(d.n)+' sem baixa · atraso mediano '+(med==null?'–':gNum(med,1))+' d · mais antigo '+gNum(d.max,0)+' d</div>'+
+        '<button data-alerta="'+gEsc(d.u)+'">Ver objetos</button></div>';
+    }).join('');
+  }
+  $('notaAlertas').innerHTML='Critério: no mínimo '+min+' objetos vencidos <b>e</b> '+pctMin+'% do estoque sem baixa da unidade. '
+    +'Crítico quando dobra o mínimo, passa de 80% ou tem objeto vencido há 15 dias ou mais. '
+    +'A contagem usa a unidade do último evento (onde o objeto está parado), não a unidade em que o prazo venceu.';
+}
+
+function renderGestao(){
+  if(!document.getElementById('secGestao')) return;
+  try{
+    if(!VIEW.length){
+      ['cmpKpis','respKpis','alertaKpis'].forEach(function(id){ const e=$(id); if(e) e.innerHTML=''; });
+      ['cmpBody','respOpBody'].forEach(function(id){ const e=$(id); if(e) e.innerHTML='<tr><td colspan="7"><div class="ges-vazio">Sem objetos no recorte atual.</div></td></tr>'; });
+      if($('gesAlertas')) $('gesAlertas').innerHTML='<div class="ges-vazio">Sem objetos no recorte atual.</div>';
+      if($('respFluxos')) $('respFluxos').innerHTML='';
+      if($('notaCmp')) $('notaCmp').innerHTML='';
+      if($('notaAlertas')) $('notaAlertas').innerHTML='';
+      const t=$('tagGestao'); if(t) t.textContent='sem dados no recorte';
+      return;
+    }
+    renderComparativo(); renderRespOp(); renderAlertas();
+    const t=$('tagGestao'); if(t) t.textContent=nf(VIEW.length)+' objetos no recorte';
+  }catch(err){ console.error('gestao',err); }
+}
+
+function initGestao(){
+  const sec=$('secGestao'); if(!sec) return;
+  sec.addEventListener('click', function(ev){
+    const cmp=ev.target.closest('[data-cmp]');
+    if(cmp){ TABONLY={tipo:'cmp',uni:cmp.getAttribute('data-cmp')}; F.expOnly=false; setModo('obj'); renderTabela(); irPara('secTab'); return; }
+    const ro=ev.target.closest('[data-resp-op]');
+    if(ro){ TABONLY={tipo:'atraso',uni:ro.getAttribute('data-resp-op')}; F.expOnly=false; setModo('obj'); renderTabela(); irPara('secTab'); return; }
+    const fl=ev.target.closest('[data-fluxo]');
+    if(fl){ TABONLY={tipo:'perda',uni:fl.getAttribute('data-fluxo')}; F.expOnly=false; setModo('obj'); renderTabela(); irPara('secTab'); return; }
+    const al=ev.target.closest('[data-alerta]');
+    if(al){ TABONLY={tipo:'atraso',uni:al.getAttribute('data-alerta')}; F.expOnly=false; setModo('obj'); renderTabela(); irPara('secTab'); return; }
+    if(ev.target.closest('#btnCmpMetade')){ const w=cmpJanela(); const i=$('cmpDivisor'); if(i) i.value=dataInput(w.div); renderComparativo(); return; }
+  });
+  const i=$('cmpDivisor'); if(i) i.addEventListener('change', function(){ renderComparativo(); });
+  ['alertaMin','alertaPct'].forEach(function(id){ const e=$(id); if(e) e.addEventListener('input', function(){ renderAlertas(); }); });
+}
+
 function renderVazio(porFiltro){
   const semBase=!OBJ.length;
-  ['uniKpis','uniFluxo','uniRank'].forEach(id=>{ if($(id)) $(id).innerHTML=''; });
+  ['uniKpis','uniFluxo'].forEach(id=>{ const e=$(id); if(e){ e.innerHTML=''; e.style.display='none'; } });
+  if($('uniResp')) $('uniResp').style.display='none';
+  if($('uniRank')) $('uniRank').innerHTML='<div class="mini">Sem perdas no recorte atual.</div>';
+  if($('uniRespResumo')) $('uniRespResumo').innerHTML='';
+  if($('uniRespRank')) $('uniRespRank').innerHTML='';
+  if($('tagResp')) $('tagResp').textContent='0 sem baixa';
+  if($('tagUniHist')) $('tagUniHist').textContent='0 perdas';
   if($('tabExp')) $('tabExp').querySelector('tbody').innerHTML='<tr><td colspan="7" style="text-align:center;padding:22px;color:#6b7d94">Sem objetos no recorte atual.</td></tr>';
-  if($('notaUnidade')) $('notaUnidade').innerHTML='Sem objetos no recorte atual. Use "Todas as unidades" ou limpe os filtros.';
-  if($('focoInfo')) $('focoInfo').innerHTML='';
-  const msg=semBase?'Sem dados carregados. Use Atualizar dados para importar os eventos.':'Nenhum objeto atende aos filtros atuais.';
+  if($('notaUnidade')) $('notaUnidade').innerHTML=semBase?'':esc(recorteVazioMsg());
+  if($('focoInfo')) $('focoInfo').innerHTML=semBase?'':('<b style="color:#a06a00">'+esc(recorteVazioMsg())+'</b>');
+  const msg=semBase?'Sem dados carregados. Use Atualizar dados para importar os eventos.':recorteVazioMsg();
+  renderRecorte();
   // Reutiliza o mesmo modelo de 20 cards, mas com os numeros recalculados de uma base vazia.
   // Nao substitui por um unico card nem deixa numeros da analise anterior.
   renderCards([]);
@@ -2903,8 +3415,8 @@ function renderVazio(porFiltro){
   if($('navFora')) $('navFora').textContent='0';
   if($('objChip')) $('objChip').className='objchip';
   if($('objChipTxt')) $('objChipTxt').textContent='';
-  if($('chipBase')) $('chipBase').textContent='Base: '+(semBase?'—':nf(AUD.eventos)+' eventos');
-  if($('chipObj')) $('chipObj').textContent='Objetos: 0';
+  if($('chipBase')) $('chipBase').textContent=(semBase?'Base: —':('Recorte: 0 de '+nf(AUD.eventos)+' eventos'));
+  if($('chipObj')) $('chipObj').textContent=(semBase?'Objetos: —':('Objetos: 0 de '+nf(OBJ.length)));
   if($('chipPrazo')) $('chipPrazo').innerHTML='Fora do prazo: <b>0</b>';
   if($('diag')) $('diag').textContent=msg;
   if($('confer')) $('confer').innerHTML=[['Objetos','0'],['Eventos','0'],['Média por objeto','0,0'],['Fora do prazo','0']]
@@ -3034,8 +3546,10 @@ function renderSintese(arr){
 }
 
 function render(){
+  renderGestao();
   contarPrazos();
   if(!VIEW.length){ renderVazio(!!OBJ.length); return; }
+  renderRecorte();
   renderCards(VIEW);
   renderUnidade(VIEW);
   renderSintese(VIEW);
@@ -3152,11 +3666,22 @@ function unidadesFoco(){
     const vistos=new Set();
     for(const e of (o.exps||[])){
       if(!e.to || e.to==='nan') continue;
-      if(vistos.has(e.to)) continue; vistos.add(e.to);
-      m.set(e.to,(m.get(e.to)||0)+1);
+      const k=uniKey(e.to); if(!k || vistos.has(k)) continue; vistos.add(k);
+      let d=m.get(k); if(!d){ d={nome:e.to,n:0}; m.set(k,d); }
+      d.n++;
     }
   }
-  return Array.from(m.entries()).sort((a,b)=>b[1]-a[1]);
+  return Array.from(m.values()).sort((a,b)=>b.n-a.n || a.nome.localeCompare(b.nome)).map(d=>[d.nome,d.n]);
+}
+function unidadesFocoAgrupadas(){
+  const grupos=new Map();
+  for(const [nome,n] of unidadesFoco()){
+    const t=tipoUni(nome)||'OUTROS';
+    if(!grupos.has(t)) grupos.set(t,[]);
+    grupos.get(t).push([nome,n]);
+  }
+  const ordem=['CTCE','CDD','AC','CEE','CEL','AGF','PCL','PRÉ-POSTAGEM','OUTROS'];
+  return ordem.filter(t=>grupos.has(t)).map(t=>[t,grupos.get(t)]);
 }
 /* Quem responde por um objeto sem baixa:
    - se o ultimo evento e expedicao para outra unidade, ja saiu daqui (responsavel = destino)
@@ -3172,9 +3697,11 @@ function respDe(o){
   return {u:e.uni, enc:saiu, para:destino, sit:(e.sit||''), t:e.t};
 }
 function periodoPadrao(){
+  if(PER_PADRAO) return PER_PADRAO;
   let mn=0,mx=0;
   for(const o of OBJ){ const L=o.exps||[]; for(const e of L){ if(!e.t) continue; if(!mn||e.t<mn)mn=e.t; if(e.t>mx)mx=e.t; } }
-  return {mn:mn,mx:mx};
+  PER_PADRAO={mn:mn,mx:mx};
+  return PER_PADRAO;
 }
 function dataInput(t){
   const d=new Date(t), p2=n=>String(n).padStart(2,'0');
@@ -3187,13 +3714,21 @@ function preencherPeriodo(){
   if(!de.value) de.value=dataInput(pd.mn);
   if(!ate.value) ate.value=dataInput(pd.mx);
 }
+let FOCO_OPCOES_ASSINATURA='';
 function preencherFoco(){
   const sel=$('focoUnidade'); if(!sel) return;
-  const us=unidadesFoco();
+  const grupos=unidadesFocoAgrupadas();
+  const assin=grupos.map(([t,l])=>t+':'+l.map(x=>x[0]+'='+x[1]).join('|')).join(';');
   const atual=sel.value||FOCO;
-  sel.innerHTML='<option value="">Todas as unidades</option>'+
-    us.map(x=>'<option value="'+esc(x[0])+'">'+esc(x[0])+' ('+nf(x[1])+')</option>').join('');
-  if(atual && us.some(x=>x[0]===atual)) sel.value=atual; else if(!atual) sel.value='';
+  if(assin!==FOCO_OPCOES_ASSINATURA){
+    FOCO_OPCOES_ASSINATURA=assin;
+    const rot={'CTCE':'Centros de tratamento (CTCE / TECA)','CDD':'CDD','AC':'Agências (AC)','CEE':'CEE','CEL':'CEL','AGF':'AGF','PCL':'PCL','PRÉ-POSTAGEM':'Pré-postagem','OUTROS':'Outros'};
+    sel.innerHTML='<option value="">Todas as unidades</option>'+grupos.map(([t,l])=>
+      '<optgroup label="'+esc(rot[t]||t)+'">'+l.map(x=>'<option value="'+esc(x[0])+'">'+esc(x[0])+' ('+nf(x[1])+')</option>').join('')+'</optgroup>').join('');
+  }
+  if(atual && Array.from(sel.options).some(o=>o.value===atual)) sel.value=atual;
+  else if(!atual) sel.value='';
+  else { const o=document.createElement('option'); o.value=atual; o.textContent=atual; sel.appendChild(o); sel.value=atual; }
 }
 function periodoExpedicao(){
   const deEl=$('expDe'), ateEl=$('expAte');
@@ -3201,13 +3736,41 @@ function periodoExpedicao(){
   const ate=ateEl&&ateEl.value?ts(ateEl.value.split('-').reverse().join('/')+' 23:59'):0;
   return {de:de,ate:ate};
 }
+/* ============================================================
+   RECORTE UNICO DO PAINEL (unidade em foco + periodo de expedicao)
+   O mesmo recorte alimenta cartoes, funil, quadros, rankings,
+   tabela e relatorio. Nao existe filtro que valha so para a secao.
+   ============================================================ */
+function uniKey(u){ return semAcento(u||'').toUpperCase().replace(/[^A-Z0-9]+/g,' ').trim(); }
+function uniEq(a,b){ return uniKey(a)===uniKey(b); }
+function recorteExpedicao(){
+  const deEl=$('expDe'), ateEl=$('expAte');
+  const pd=periodoPadrao();
+  const deVal=deEl&&deEl.value?ts(deEl.value.split('-').reverse().join('/')+' 00:00'):0;
+  const ateVal=ateEl&&ateEl.value?ts(ateEl.value.split('-').reverse().join('/')+' 23:59'):0;
+  const minD=pd.mn?dataInput(pd.mn):'', maxD=pd.mx?dataInput(pd.mx):'';
+  const periodo=!!(deEl&&ateEl) && ((!!deEl.value&&deEl.value!==minD)||(!!ateEl.value&&ateEl.value!==maxD));
+  const de=periodo?((deEl&&deEl.value===minD)?pd.mn:(deVal||pd.mn||0)):0;
+  const ate=periodo?((ateEl&&ateEl.value===maxD)?pd.mx:(ateVal||pd.mx||0)):0;
+  return {uni:FOCO||'', de:de, ate:ate, periodo:periodo, ativo:periodo||!!FOCO};
+}
+function objNoRecorte(o,rec){
+  const L=(o&&o.exps)||[];
+  const janela=e=>(!rec.de||e.t>=rec.de)&&(!rec.ate||e.t<=rec.ate);
+  if(rec.uni){
+    if(L.some(e=>uniEq(e.to,rec.uni)&&janela(e))) return true;
+    if(rec.periodo) return false;
+    return (o.evs||[]).some(e=>uniEq(e.uni,rec.uni));
+  }
+  return L.some(janela);
+}
 function coorteAtual(){
-  const p=periodoExpedicao(), dst=FOCO||'';
+  const p=recorteExpedicao(), dst=FOCO||'';
   const out=[];
   for(const o of VIEW){
     const list=o.exps||[];
     if(!list.length) continue;
-    const e=dst?list.find(x=>x.to===dst):list[0];
+    const e=dst?(list.find(x=>uniEq(x.to,dst) && (!p.de||x.t>=p.de) && (!p.ate||x.t<=p.ate))||list.find(x=>uniEq(x.to,dst))):((p.de||p.ate)?(list.find(x=>(!p.de||x.t>=p.de)&&(!p.ate||x.t<=p.ate))||list[0]):list[0]);
     if(!e) continue;
     if(p.de && e.t<p.de) continue;
     if(p.ate && e.t>p.ate) continue;
@@ -3250,6 +3813,8 @@ function porUnidadePerda(arr){
 
 function renderUnidade(arr){
   if(!$('uniKpis')) return;
+  $('uniKpis').style.display=''; $('uniFluxo').style.display='';
+  if($('uniResp')) $('uniResp').style.display='';
   preencherFoco();
   const c=coorteAtual();
   COHORT=c; COHORT_UNI=FOCO||'';
@@ -3268,13 +3833,13 @@ function renderUnidade(arr){
   const atrEnt=mediana(aFora.map(x=>((x.o.entT||x.o.fimT||0)-x.o.dmeE)/86400000).filter(v=>v!=null));
 
   if($('focoInfo')){
-    const per=periodoExpedicao();
+    const per=recorteExpedicao();
     $('focoInfo').innerHTML = FOCO
-      ? ('<b>'+esc(FOCO)+'</b> · '+nf(VIEW.length)+' objetos no recorte · '+nf(tot)+' expedições para a unidade'+(per.de||per.ate?' no período informado':' em toda a base')+(c.length?(' · '+txtOrigens(c)):'')+'. O painel inteiro está filtrado por esta unidade.')
-      : ('Nenhuma unidade escolhida: os quadros somam <b>'+nf(tot)+'</b> expedições de todas as unidades. Escolha a unidade do gestor para ver só ela.');
+      ? ('<b>'+esc(FOCO)+'</b> · '+nf(VIEW.length)+' objetos no recorte · '+nf(tot)+' expedições para a unidade'+(per.periodo?(' de '+dbr(per.de)+' a '+dbr(per.ate)):' em toda a base')+(c.length?(' · '+txtOrigens(c)):'')+'. <b>O painel inteiro está filtrado por este recorte.</b>')
+      : ('Todas as unidades: os quadros somam <b>'+nf(tot)+'</b> expedições'+(per.periodo?(' entre '+dbr(per.de)+' e '+dbr(per.ate)):' de toda a base')+'. Escolha a unidade do gestor para ver só ela.');
   }
   $('uniKpis').innerHTML=[
-    {c:'',l:'Expedidos para a unidade',v:nf(tot),s:(FOCO?txtOrigens(c):'todas as unidades')+' · '+((function(){const per=periodoExpedicao();return (per.de||per.ate)?'período informado':'toda a base';})())},
+    {c:'',l:'Expedidos para a unidade',v:nf(tot),s:(FOCO?txtOrigens(c):'todas as unidades')+' · '+((function(){const per=recorteExpedicao();return per.periodo?('período '+dbr2(per.de)+' a '+dbr2(per.ate)):'toda a base';})())},
     {c:'ok',l:'Chegaram até o prazo',v:nf(A.length),s:pct(A.length,tot)+' dos expedidos'},
     {c:'bad',l:'Chegaram depois do prazo',v:nf(nAt),s:pct(nAt,tot)+' dos expedidos'+(atrCheg!=null?(' · atraso mediano '+d1(atrCheg)+' d'):'')},
     {c:'warn',l:'Sem chegada registrada',v:nf(nSem),s:'sem leitura na unidade depois da expedição'}
@@ -3324,12 +3889,12 @@ function renderUnidade(arr){
   if($('uniRespResumo')){
     const alvo=FOCO||'';
     const rr=semB.map(o=>({o:o,r:respDe(o)}));
-    const comUni=alvo?rr.filter(x=>x.r.u===alvo && !x.r.enc).length:0;
-    const transito=alvo?rr.filter(x=>x.r.enc && x.r.para===alvo && x.r.u!==alvo).length:0;
-    const fora=alvo?rr.filter(x=>x.r.u!==alvo && !x.r.enc).length:0;
-    const encOutros=alvo?rr.filter(x=>x.r.enc && x.r.para!==alvo).length:0;
-    const vencCom=alvo?rr.filter(x=>x.r.u===alvo && !x.r.enc && x.o.late).length:0;
-    const vencFora=alvo?rr.filter(x=>x.r.u!==alvo && !x.r.enc && x.o.late).length:0;
+    const comUni=alvo?rr.filter(x=>uniEq(x.r.u,alvo) && !x.r.enc).length:0;
+    const transito=alvo?rr.filter(x=>x.r.enc && uniEq(x.r.para,alvo) && !uniEq(x.r.u,alvo)).length:0;
+    const fora=alvo?rr.filter(x=>!uniEq(x.r.u,alvo) && !x.r.enc).length:0;
+    const encOutros=alvo?rr.filter(x=>x.r.enc && !uniEq(x.r.para,alvo)).length:0;
+    const vencCom=alvo?rr.filter(x=>uniEq(x.r.u,alvo) && !x.r.enc && x.o.late).length:0;
+    const vencFora=alvo?rr.filter(x=>!uniEq(x.r.u,alvo) && !x.r.enc && x.o.late).length:0;
     $('uniRespResumo').innerHTML = alvo
       ? '<div class="rr prop"><span>Com a unidade (sem baixa)</span><b>'+nf(comUni)+'</b><i>'+pct(comUni,totResp)+' · '+nf(vencCom)+' vencidos</i></div>'+
         '<div class="rr fora"><span>Ja em outra unidade</span><b>'+nf(fora)+'</b><i>'+pct(fora,totResp)+' · '+nf(vencFora)+' vencidos</i></div>'+
@@ -3340,7 +3905,7 @@ function renderUnidade(arr){
   if($('uniRespRank')){
     const maxR=listaResp.length?listaResp[0][1].n:1;
     $('uniRespRank').innerHTML = listaResp.length? listaResp.slice(0,8).map(([k,g])=>{
-      const on=FOCO && k===FOCO;
+      const on=FOCO && uniEq(k,FOCO);
       return '<div class="barra click'+(on?' on':'')+'" data-resp="'+esc(k)+'" title="Clique para ver os objetos sem baixa parados nesta unidade">'+
         '<div class="nome">'+esc(k)+'</div>'+
         '<div class="trilho"><div class="fill" style="width:'+Math.max(3,g.n/maxR*100).toFixed(1)+'%;background:linear-gradient(90deg,#f0b8ae,#c0392b)"></div></div>'+
@@ -3352,7 +3917,7 @@ function renderUnidade(arr){
   const u=porUnidadePerda(VIEW), totL=VIEW.filter(o=>o.late).length||1, max=u.length?u[0].n:1;
   $('tagUniHist').textContent=nf(VIEW.filter(o=>o.late).length)+' perdas';
   $('uniRank').innerHTML = u.length? u.slice(0,12).map(d=>{
-    const on=FOCO && d.nome===FOCO;
+    const on=FOCO && uniEq(d.nome,FOCO);
     return '<div class="barra click'+(on?' on':'')+'" data-unihist="'+esc(d.nome)+'" title="Clique para ver os objetos desta unidade">'+
       '<div class="nome">'+esc(d.nome)+'</div>'+
       '<div class="trilho"><div class="fill" style="width:'+Math.max(3,d.n/max*100).toFixed(1)+'%;background:linear-gradient(90deg,#8fb8d8,#0b5aa5)"></div></div>'+
@@ -3360,7 +3925,7 @@ function renderUnidade(arr){
   }).join('') : '<div class="mini">Sem perdas no recorte atual.</div>';
 
   if($('notaUnidade')){
-    $('notaUnidade').innerHTML='<b>Como ler:</b> a expedição considera cada evento em que o CTCE (ou TECA) informa a unidade de destino e a primeira leitura seguinte nessa unidade — se o objeto passar duas vezes, conta a primeira. "Chegou até o prazo" compara essa chegada com a data máxima de entrega; a entrega é comparada com a mesma data. '+
+    $('notaUnidade').innerHTML='<b>Como ler:</b> o recorte inclui todo objeto que passou pela unidade no período; o indicador "Expedidos para a unidade" conta apenas as expedições do CTCE/TECA para ela. A expedição considera cada evento em que o CTCE (ou TECA) informa a unidade de destino e a primeira leitura seguinte nessa unidade — se o objeto passar duas vezes, conta a primeira. "Chegou até o prazo" compara essa chegada com a data máxima de entrega; a entrega é comparada com a mesma data. '+
       'O ranking usa a unidade em que o objeto estava no instante do vencimento, incluindo o que já foi entregue fora do prazo e o que segue em aberto. Clique em uma linha para abrir os objetos e conferir as etapas; clique em um objeto da tabela para ver o histórico completo.';
   }
 }
@@ -3371,26 +3936,33 @@ function initUnidade(){
   preencherFoco();
   $('focoUnidade').addEventListener('change',e=>{
     FOCO=e.target.value||'';
+    EVO_MODO='auto';
     F.expOnly=false;
-    aplicarInterno(); render();
+    aplicar(); animarRecorte();
     if(FOCO) irPara('secUnidade');
   });
-  ['expDe','expAte'].forEach(id=>{ const el=$(id); if(el) el.addEventListener('change',()=>{ renderUnidade(VIEW); atualizarRelatorioUnidade(); }); });
-  $('btnExpAplicar').addEventListener('click',()=>{ renderUnidade(VIEW); atualizarRelatorioUnidade(true); atualizarRelatorio(); });
+  // Datas de expedicao: mudam o painel inteiro, nao apenas esta secao.
+  ['expDe','expAte'].forEach(id=>{ const el=$(id); if(el) el.addEventListener('change',()=>{ F.expOnly=false; aplicar(); animarRecorte(); }); });
+  $('btnExpAplicar').addEventListener('click',()=>{ F.expOnly=false; aplicar(); animarRecorte(); atualizarRelatorioUnidade(true); });
+  if($('btnExpTudo')) $('btnExpTudo').addEventListener('click',()=>{
+    const d=$('expDe'), a=$('expAte'); if(d) d.value=''; if(a) a.value=''; preencherPeriodo();
+    F.expOnly=false; aplicar(); animarRecorte();
+  });
   $('btnExpTabela').addEventListener('click',()=>{
     if(!COHORT.length){ alert('Nenhum objeto na expedição desta unidade no período.'); return; }
-    F.expOnly=true; aplicarInterno(); setModo('obj'); render(); irPara('secTab');
+    // Filtro so da tabela: os cartoes e quadros continuam com o total do recorte.
+    TABONLY={tipo:'exp'}; F.expOnly=false; setModo('obj'); renderTabela(); irPara('secTab');
   });
   $('btnExpXlsx').addEventListener('click',()=>baixarPlanilhaExpedicao());
   $('uniRank').addEventListener('click',e=>{
     const b=e.target.closest('[data-unihist]'); if(!b) return;
-    F.uniPerda=b.getAttribute('data-unihist'); F.expOnly=false;
-    aplicarInterno(); setModo('obj'); render(); irPara('secTab');
+    TABONLY={tipo:'perda',uni:b.getAttribute('data-unihist')}; F.expOnly=false;
+    setModo('obj'); renderTabela(); irPara('secTab');
   });
   if($('uniRespRank')) $('uniRespRank').addEventListener('click',e=>{
     const b=e.target.closest('[data-resp]'); if(!b) return;
-    TABONLY={tipo:'resp',uni:b.getAttribute('data-resp')}; F.uniPerda=''; F.expOnly=false;
-    aplicarInterno(); setModo('obj'); render(); irPara('secTab');
+    TABONLY={tipo:'resp',uni:b.getAttribute('data-resp')}; F.expOnly=false;
+    setModo('obj'); renderTabela(); irPara('secTab');
   });
   $('tabExp').addEventListener('click',e=>{
     const tr=e.target.closest('tr[data-objexp]'); if(!tr) return;
@@ -3516,7 +4088,9 @@ function copiarRelatorioUnidade(){
 
 function irPara(id){
   const el=$(id), WORK=$('work'); if(!el||!WORK) return;
-  const top=el.getBoundingClientRect().top-WORK.getBoundingClientRect().top+WORK.scrollTop-10;
+  const strip=$('recorteStrip');
+  const folga=(strip&&!strip.hidden)?strip.offsetHeight+12:10;
+  const top=el.getBoundingClientRect().top-WORK.getBoundingClientRect().top+WORK.scrollTop-folga;
   WORK.scrollTo({top:Math.max(0,top),behavior:'smooth'});
   marcarNav(id); fecharRail();
 }
@@ -3525,13 +4099,26 @@ function marcarNav(id){
 }
 function fecharRail(){ $('rail').classList.remove('open'); $('railVeil').classList.remove('on'); }
 function zerarFiltrosUI(){
-  OBJF=''; TABONLY=null; F.busca=''; F.de=''; F.ate=''; F.status=''; F.etapa=''; F.cat=''; F.sit=''; F.uni=''; F.uniPerda=''; F.uniAgora=''; F.prazo=''; F.proc=''; F.tipoUni=''; F.dev=''; F.abrang=''; F.expOnly=false;
+  limparFiltrosLaterais();
   FOCO=''; const fs=$('focoUnidade'); if(fs) fs.value='';
-  document.querySelectorAll('#prazoChips .pchip').forEach(b=>b.classList.remove('on'));
-  ['fBusca','fDe','fAte','fStatus','fEtapa','fCategoria','fSituacao','fUnidade','fProc','fTipoUni','fDev','fAbrang'].forEach(id=>{ const e=$(id); if(e) e.value=''; });
+  const d=$('expDe'), a=$('expAte'); if(d) d.value=''; if(a) a.value=''; preencherPeriodo();
 }
 function limparFiltros(){ zerarFiltrosUI(); aplicar(); }
-function soUm(id,valor){ zerarFiltrosUI(); const e=$(id); if(e) e.value=valor; aplicar(); }
+function preservarRecorte(fn){
+  // Mantem o recorte E os filtros de data/unidade ja escolhidos.
+  // O clique refina dentro do que o usuario ja filtrou; so os demais
+  // filtros (status, etapa, categoria etc.) sao trocados pelo clique.
+  const foco=FOCO, de=($('expDe')||{}).value, ate=($('expAte')||{}).value;
+  const fDe=($('fDe')||{}).value, fAte=($('fAte')||{}).value, fUni=($('fUnidade')||{}).value;
+  limparFiltrosLaterais({de:!!fDe, ate:!!fAte, uni:!!fUni});
+  FOCO=foco; const fs=$('focoUnidade'); if(fs) fs.value=foco||'';
+  if($('expDe')) $('expDe').value=de||''; if($('expAte')) $('expAte').value=ate||'';
+  if($('fDe')) $('fDe').value=fDe||''; if($('fAte')) $('fAte').value=fAte||''; if($('fUnidade')) $('fUnidade').value=fUni||'';
+  fn();
+}
+function soUm(id,valor){
+  preservarRecorte(()=>{ const e=$(id); if(e) e.value=valor; aplicar(); });
+}
 
 function clicarCard(id){
   const m={
@@ -3542,17 +4129,17 @@ function clicarCard(id){
     c_ret:()=>{ soUm('fStatus','retirada'); irPara('secTab'); },
     c_ent:()=>{ soUm('fStatus','entregue'); irPara('secTab'); },
     c_dev:()=>{ soUm('fStatus','devolvido'); irPara('secTab'); },
-    c_dev_unidade:()=>{ zerarFiltrosUI(); const e=$('fDev'); if(e) e.value='unidade'; aplicar(); irPara('secTab'); },
-    c_dev_ctce:()=>{ zerarFiltrosUI(); const e=$('fDev'); if(e) e.value='ctce'; aplicar(); irPara('secTab'); },
+    c_dev_unidade:()=>{ preservarRecorte(()=>{ const e=$('fDev'); if(e) e.value='unidade'; aplicar(); }); irPara('secTab'); },
+    c_dev_ctce:()=>{ preservarRecorte(()=>{ const e=$('fDev'); if(e) e.value='ctce'; aplicar(); }); irPara('secTab'); },
     c_dist:()=>{ soUm('fStatus','baixaFinal'); irPara('secTab'); },
     c_a:()=>{ soUm('fEtapa','A'); irPara('secFases'); },
     c_b:()=>{ soUm('fEtapa','B'); irPara('secFases'); },
     c_c:()=>{ soUm('fEtapa','C'); irPara('secFases'); },
     c_d:()=>{ soUm('fEtapa','D'); irPara('secFases'); },
     c_fase:()=>{ irPara('secFases'); },
-    c_uni:()=>{ const u=porUnidade(OBJ); if(u.length){ zerarFiltrosUI(); F.uniPerda=u[0].nome; aplicar(); irPara('secResp'); } },
+    c_uni:()=>{ const u=porUnidade(VIEW); if(u.length){ preservarRecorte(()=>{ F.uniPerda=u[0].nome; aplicar(); }); irPara('secResp'); } },
     c_tot:()=>{ irPara('secTempo'); }, c_atr:()=>{ soUm('fStatus','fora'); irPara('secTab'); },
-    c_med:()=>{ limparFiltros(); setModo('evt'); irPara('secTab'); }
+    c_med:()=>{ preservarRecorte(()=>{ setModo('evt'); }); irPara('secTab'); }
   };
   if(m[id]) m[id]();
 }
@@ -4107,7 +4694,7 @@ async function limparTudo(){
   DADOS.length=0;
   Object.keys(DIC).forEach(k=>{ if(Array.isArray(DIC[k])) DIC[k].length=0; });
   window.__DADOS__=DADOS; window.__DIC__=DIC; window.OBJ=OBJ;
-  REF=0; DATAMIN=0;
+  REF=0; DATAMIN=0; PER_PADRAO=undefined;
   AUD={fonte:'—',eventos:0,objetos:0};
   pagina=1; MODO='obj'; OBJF='';
   if($('modalLimpar')) $('modalLimpar').classList.remove('on');
@@ -4159,6 +4746,8 @@ async function init(){
   setInterval(conferirDia,60000);
 
   // navegacao lateral
+  initGestao();
+  if($('evoScope')) $('evoScope').addEventListener('click',e=>{ const b=e.target.closest('[data-evo]'); if(!b) return; EVO_MODO=b.dataset.evo; renderEvo(VIEW); });
   $('railNav').addEventListener('click', e=>{ const b=e.target.closest('button[data-go]'); if(!b) return; irPara(b.dataset.go); });
   document.querySelectorAll('[data-cover-go]').forEach(b=>b.addEventListener('click',()=>irPara(b.dataset.coverGo)));
   document.querySelectorAll('[data-cover-action="atualizar"]').forEach(b=>b.addEventListener('click',abrirModalAtualizar));
@@ -4228,7 +4817,7 @@ async function init(){
   });
   $('objChipX').addEventListener('click',()=>{ limparFiltros(); setModo('obj'); });
   $('topPend').addEventListener('click',e=>{ const b=e.target.closest('.t12'); if(!b) return;
-    zerarFiltrosUI(); F.uniAgora=b.dataset.uni; aplicar(); setModo('obj'); irPara('secTab'); });
+    TABONLY={tipo:'resp',uni:b.dataset.uni}; setModo('obj'); renderTabela(); irPara('secTab'); });
   $('pgPrev').addEventListener('click',()=>{ if(pagina>1){ pagina--; renderTabela(); irPara('secTab'); } });
   $('pgNext').addEventListener('click',()=>{ pagina++; renderTabela(); irPara('secTab'); });
 
@@ -4266,6 +4855,7 @@ async function init(){
   $('btnCancLimpar').addEventListener('click',()=>$('modalLimpar').classList.remove('on'));
   $('btnConfLimpar').addEventListener('click',limparTudo);
   initUnidade();
+  initRecorte();
   $('btnCopiarRelatorio').addEventListener('click',copiarRelatorio);
   $('btnTxtRelatorio').addEventListener('click',()=>baixar(new Blob([textoRelatorio(VIEW)],{type:'text/plain;charset=utf-8'}),'Relatorio_Prazo_SEPA_'+dataArquivo()+'.txt'));
   $('btnPngResumo').addEventListener('click',exportarPNG);
